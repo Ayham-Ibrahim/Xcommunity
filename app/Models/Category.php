@@ -14,7 +14,7 @@ class Category extends Model
         'name',
     ];
 
-    
+
     public function childCategories()
     {
         return $this->hasMany(ChildCategory::class, 'category_id', 'id');
