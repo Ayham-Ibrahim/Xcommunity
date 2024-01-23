@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Article;
+use App\Models\Podcast;
+use App\Models\PodcastList;
+use App\Models\ArticleGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ChildCategory extends Model
 {
@@ -20,4 +24,22 @@ class ChildCategory extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+    public function articleGroups()
+    {
+        return $this->hasMany(ArticleGroup::class);
+    }
+    public function podcasts()
+    {
+        return $this->hasMany(Podcast::class);
+    }
+    public function PodcastLists()
+    {
+        return $this->hasMany(PodcastList::class);
+    }
+
 }

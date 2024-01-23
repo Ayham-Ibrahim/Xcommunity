@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Book;
+use App\Models\Supplement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -18,5 +20,15 @@ class Category extends Model
     public function childCategories()
     {
         return $this->hasMany(ChildCategory::class, 'category_id', 'id');
+    }
+
+    public function supplements(): HasMany
+    {
+        return $this->hasMany(Supplement::class);
+    }
+
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class);
     }
 }
