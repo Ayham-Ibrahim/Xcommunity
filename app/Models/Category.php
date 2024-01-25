@@ -7,6 +7,7 @@ use App\Models\Supplement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -31,4 +32,10 @@ class Category extends Model
     {
         return $this->hasMany(Book::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_interests');
+    }
+
 }
