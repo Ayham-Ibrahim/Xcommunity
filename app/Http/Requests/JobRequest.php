@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JobRequest extends FormRequest
@@ -22,19 +23,20 @@ class JobRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'          =>'required|string|max:200',
-            'description'    =>'required|min:3|max:1000',
-            'tasks'          =>'required|min:3|max:1000',
-            'skills'         =>'required|min:3|max:1000',
-            'age'            =>'required|string|max:200',
-            'job_type'       =>'required|string|max:200',
-            'email'          =>'required|string|max:200',
-            'nationality'    =>'required|string|max:200',
-            'gender'         =>['required',
-                                    Rule::in(['male','female']),
-                                ],
+            'title'          => 'required|string|max:200',
+            'description'    => 'required|min:3|max:1000',
+            'tasks'          => 'required|min:3|max:1000',
+            'skills'         => 'required|min:3|max:1000',
+            'age'            => 'required|string|max:200',
+            'job_type'       => 'required|string|max:200',
+            'email'          => 'required|string|max:200',
+            'nationality'    => 'required|string|max:200',
+            'gender'         => [
+                'required',
+                Rule::in(['male', 'female', 'no profrence']),
+            ],
             'image'          => 'nullable|image|mimes:png,jpg,jpeg,gif,sug|max:2048',
-            'section_id'     =>'required|exists:sections,id',
+            'section_id'     => 'required|exists:sections,id',
 
         ];
     }
