@@ -49,11 +49,10 @@ class User extends Authenticatable
         return $this->hasOne(UserInfo::class, 'user_id', 'id');
     }
 
-    public function userInterest()
+    public function categories()
     {
-        return $this->hasOne(UserInterest::class, 'user_id', 'id');
+        return $this->belongsToMany(Category::class, 'user_interests');
     }
-
 
     public function userlists()
     {

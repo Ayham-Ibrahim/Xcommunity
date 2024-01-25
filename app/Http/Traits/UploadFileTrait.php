@@ -10,7 +10,7 @@ trait UploadFileTrait
 
     public function UploadFile(Request $request, $folderName, $fileName, $disk)
     {
-        $photo = time() . '.' . $request->file($fileName)->getClientOriginalName();
+        $file = time() . '.' . $request->file($fileName)->getClientOriginalName();
         $path = $request->file($fileName)->storeAs($folderName, $file, $disk);
         return $path;
     }
@@ -18,7 +18,7 @@ trait UploadFileTrait
 
     public function downloadFile($file,$folder)
     {
-        $path = storage_path(assets("files/{$folder}/{$file}"));
+        $path = storage_path(asset("files/{$folder}/{$file}"));
 
         if (file_exists($path)) {
             return response()->download($path);
