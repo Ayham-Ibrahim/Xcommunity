@@ -96,4 +96,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create_user_info', [UserInfoController::class, 'store']);
     Route::post('/update_user_info/{user_info}', [UserInfoController::class, 'update']);
     Route::delete('/delete_user_info/{user_info}', [UserInfoController::class, 'destroy']);
+
+
+
+
+    Route::prefix('user/{user}')->group(function () {
+        Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
+        Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
+    });
+
 });

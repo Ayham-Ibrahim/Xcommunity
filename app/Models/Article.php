@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Models\Section;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
+use App\Http\Traits\LikeableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,LikeableTrait;
 
     protected $fillable = [
         'title',
@@ -23,6 +24,10 @@ class Article extends Model
         'article_group_id',
     ];
 
+    public function likes()
+    {
+        return $this->morphMany(like::class, 'likable');
+    }
     public function section()
     {
         return $this->belongsTo(Section::class,'section_id', 'id');
@@ -37,4 +42,5 @@ class Article extends Model
     {
         return $this->belongsTo(ArticleGroup::class,'article_group_id', 'id');
     }
+
 }

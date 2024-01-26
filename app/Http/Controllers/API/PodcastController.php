@@ -100,4 +100,15 @@ class PodcastController extends Controller
             return $this->customeResponse(null,'podcast not found',404);
         }
     }
+
+
+
+    public function toggleLike(User $user, Podcast $podcast)
+    {
+        if($podcast){
+            return $podcast->toggleLike($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+
+    }
 }
