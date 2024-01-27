@@ -10,6 +10,7 @@ use App\Http\Controllers\API\PodcastListController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ArticleGroupController;
+use App\Http\Controllers\API\SocialiteLoginController;
 use App\Http\Controllers\API\SupplementController;
 use App\Http\Controllers\API\UserInfoController;
 use App\Http\Controllers\API\UserInterestController;
@@ -31,6 +32,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('login/{provider}', [SocialiteLoginController::class, 'redirectToProvider']);
+Route::get('login/{provider}/callback', [SocialiteLoginController::class, 'handleProviderCallback']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
