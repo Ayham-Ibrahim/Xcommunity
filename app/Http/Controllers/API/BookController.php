@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
+use App\Models\UserInterest;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
@@ -94,7 +95,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
         if($book){
             $book->delete();

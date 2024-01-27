@@ -111,4 +111,15 @@ class SupplementController extends Controller
 
         return $this->customeResponse($data, 'Done!', 200);
     }
+
+    public function download(Supplement $supplement)
+    {
+        if (!empty($supplement)) {
+            return $this->downloadFile($supplement->file, 'supplements');
+        }else{
+            return $this->customeResponse(null,'book not found',404);
+        }
+
+    }
+
 }
