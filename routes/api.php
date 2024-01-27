@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_supplement/{supplement}', [SupplementController::class, 'update']);
     Route::delete('/delete_supplement/{supplement}', [SupplementController::class, 'destroy']);
     Route::get('/interest_supplements', [SupplementController::class, 'intersteSupplements']);
+    Route::get('/download_supplement/{supplement}',[SupplementController::class,'download']);
 
     Route::get('/user_interests/{user}', [UserInterestController::class, 'index']);
     Route::post('/createOrUpdate_interests', [UserInterestController::class, 'createOrUpdate']);
