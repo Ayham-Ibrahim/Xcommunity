@@ -15,16 +15,4 @@ trait UploadFileTrait
         return $path;
     }
 
-
-    public function downloadFile($file,$folder)
-    {
-        $path = storage_path(asset("files/{$folder}/{$file}"));
-
-        if (file_exists($path)) {
-            return response()->download($path);
-        } else {
-            return response()->json(['message' => 'Not Found!'], 404);
-        }
-    }
-
 }

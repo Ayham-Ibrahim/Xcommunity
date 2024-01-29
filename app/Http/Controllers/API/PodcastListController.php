@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\UploadFileTrait;
@@ -91,4 +92,15 @@ class PodcastListController extends Controller
             return $this->customeResponse(null,'podcastList not found',404);
         }
     }
+
+
+    public function followList(User $user,PodcastList $podcastList){
+        if($podcastList){
+            $user = Auth::user();
+            return $podcastList->followToggle($user);
+        }
+        return $this->customeResponse(null,'podcastList not found',404);
+
+    }
+
 }

@@ -8,9 +8,12 @@ use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\DownloadFileTrait;
 
 class BookController extends Controller
 {
+
+    use DownloadFileTrait;
     /**
      * Display a listing of the resource.
      */
@@ -104,10 +107,11 @@ class BookController extends Controller
         }
     }
 
-    public function download(Book $book)
+    public function downloadFile(User $user,Book $book)
     {
         if($book){
-            return $this->downloadFile($book->file, 'books');
+            $user = Auth::user();
+            return $this->downloadFile($user,$book->file, 'books');
         }else{
             return $this->customeResponse(null,'book not found',404);
         }

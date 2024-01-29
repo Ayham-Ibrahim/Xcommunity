@@ -20,6 +20,7 @@ class BookResource extends JsonResource
             "description"   => $this->description,
             'file'          =>$this->image,
             'image'          =>assets('photos' . $this->image),
+            'downloads'      =>$this->downloadsCount(),
             // "category_id"   => $this->
             // "section_id"   => $this->
         ];

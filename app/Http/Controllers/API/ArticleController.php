@@ -116,6 +116,7 @@ class ArticleController extends Controller
     public function toggleLike(User $user,  Article $article)
     {
         if($article){
+            $user = Auth::user();
             return $article->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);

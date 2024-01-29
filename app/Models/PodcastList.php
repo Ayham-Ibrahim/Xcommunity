@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Http\Traits\FollowTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PodcastList extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,FollowTrait;
 
     protected $fillable = [
         'title',
@@ -27,4 +28,10 @@ class PodcastList extends Model
     {
         return $this->hasMany(Podcast::class);
     }
+
+    public function followers()
+    {
+        return $this->morphMany(Follow::class, 'followable');
+    }
+
 }
