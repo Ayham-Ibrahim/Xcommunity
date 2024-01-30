@@ -6,13 +6,18 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RatingRequest;
 use App\Http\Resources\BookResource;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Traits\UploadFileTrait;
+use App\Models\UserInterest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\DownloadFileTrait;
+use App\Models\User;
 
 class BookController extends Controller
 {
-
+    use ApiResponseTrait,UploadFileTrait;
     use DownloadFileTrait;
     /**
      * Display a listing of the resource.
@@ -57,6 +62,8 @@ class BookController extends Controller
     public function show(Book $book)
     {
         if($book){
+            $user = Auth::user();
+            $book->visit($user);
             return $this->customeResponse(new BookResource($book),'Done',200);
         }else{
             return $this->customeResponse(null,'book not found',404);
@@ -97,7 +104,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
         if($book){
             $book->delete();
@@ -118,13 +125,24 @@ class BookController extends Controller
 
     }
 
-    public function interstedBook(){
-
+    public function interstedBook()
+    {
         $user_id = Auth::user()->id;
         $user_intesests = UserInterest::where('user_id',$user_id)->pluck('category_id')->toArray();
         $inerested_books = Book::where('category_id',$user_intesests)->get();
 
         return $this->customeResponse(BookResource::collection($inerested_books),'Done',200);
 
+    }
+
+    public function bookRating (RatingRequest $request , Book $book)
+    {
+        if(!empty($book)){
+            $rate = $request->rate;
+            $book->rateOnce($rate);
+            $data = new BookResource($book);
+            return $this->customeResponse($data, 'Done!', 200);
+        }
+        return $this->customeResponse(null,'not found',404);
     }
 }

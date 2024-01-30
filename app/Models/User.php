@@ -64,4 +64,9 @@ class User extends Authenticatable
         return $this->hasMany(UserList::class, 'user_id', 'id');
     }
 
+
+    public function providers()
+    {
+        return $this->hasMany(Provider::class, 'user_id', 'id');
+    }
 }

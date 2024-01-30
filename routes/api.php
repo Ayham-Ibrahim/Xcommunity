@@ -10,6 +10,7 @@ use App\Http\Controllers\API\PodcastListController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ArticleGroupController;
+use App\Http\Controllers\API\SocialiteLoginController;
 use App\Http\Controllers\API\SupplementController;
 use App\Http\Controllers\API\UserInfoController;
 use App\Http\Controllers\API\UserInterestController;
@@ -35,6 +36,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/verify-email/{code}', [AuthController::class, 'emailVerification']);
 
 
+Route::get('login/{provider}', [SocialiteLoginController::class, 'redirectToProvider']);
+Route::get('login/{provider}/callback', [SocialiteLoginController::class, 'handleProviderCallback']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
 
@@ -52,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/podcastList/{podcastList}',[PodcastListController::class,'show']);
     Route::put('/update-podcastList/{podcastList}',[PodcastListController::class,'update']);
     Route::delete('/delete-podcastList/{podcastList}',[PodcastListController::class,'delete']);
+    Route::post('/podcastListRating/{podcastList}',[PodcastListController::class,'podcastListRating']);
 
     Route::get('/jobs',[JobController::class,'index']);
     Route::post('/add-job',[JobController::class,'store']);
@@ -64,6 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/book/{book}',[BookController::class,'show']);
     Route::put('/update-book/{book}',[BookController::class,'update']);
     Route::delete('/delete-book/{book}',[BookController::class,'delete']);
+    Route::get('/download-book/{book}',[BookController::class,'download']);
+    Route::post('/bookRating/{book}',[BookController::class,'bookRating']);
     Route::get('user/{user}/book/{book}/download-book',[BookController::class,'downloadFile']);
 
     Route::get('/article_groups', [ArticleGroupController::class, 'index']);
@@ -92,6 +99,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_supplement/{supplement}', [SupplementController::class, 'update']);
     Route::delete('/delete_supplement/{supplement}', [SupplementController::class, 'destroy']);
     Route::get('/interest_supplements', [SupplementController::class, 'intersteSupplements']);
+    Route::get('/download_supplement/{supplement}',[SupplementController::class,'download']);
+    Route::post('/supplementRating/{supplement}',[SupplementController::class,'supplementRating']);
 
     Route::get('/user_interests/{user}', [UserInterestController::class, 'index']);
     Route::post('/createOrUpdate_interests', [UserInterestController::class, 'createOrUpdate']);

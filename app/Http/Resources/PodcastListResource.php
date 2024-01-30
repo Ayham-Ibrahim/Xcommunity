@@ -15,10 +15,12 @@ class PodcastListResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'  =>$this->id,
-            'title' =>$this->title,
-            'description' =>$this->description,
-            'image' => assets('photos/'.$this->image),
+            'id'               =>$this->id,
+            'title'            =>$this->title,
+            'description'      =>$this->description,
+            'image'            => asset('photos/'.$this->image),
+            'visitors count'   => $this->visitorCount(),
+            'rating'           => $this->averageRating(),
             'followers_count'   => $this->followersCount('like'),
 
             // 'child_category_id' =>

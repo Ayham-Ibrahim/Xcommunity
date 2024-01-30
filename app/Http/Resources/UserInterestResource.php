@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +16,11 @@ class UserInterestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $user = User::find($this->user_id);
+        $category = Category::find($this->category_id);
+        return [
+            'user'      => new UserResource($user),
+            'category'  => new CategoryResource($category),
+        ];
     }
 }

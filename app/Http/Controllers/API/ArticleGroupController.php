@@ -50,6 +50,8 @@ class ArticleGroupController extends Controller
     public function show(ArticleGroup $article_group)
     {
         if(!empty($article_group)){
+            $user = Auth::user();
+            $article_group->visit($user);
             $data = new ArticleGroupResource($article_group);
             return $this->customeRespone($data, "Done!", 200);
         }

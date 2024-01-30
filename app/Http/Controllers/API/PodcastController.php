@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PodcastRequest;
 use App\Http\Resources\PodcastResource;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PodcastController extends Controller
 {
@@ -48,6 +50,8 @@ class PodcastController extends Controller
     public function show(Podcast $podcast)
     {
         if($podcast){
+            $user = Auth::user();
+            $podcast->visit($user);
             return $this->customeResponse(new PodcastResource($podcast),'Done',200);
         }else{
             return $this->customeResponse(null,'podcast not found',404);
@@ -64,12 +68,12 @@ class PodcastController extends Controller
             if(!empty($request->voice)){
                 $voice_path = $this->UploadFile($request,'podcast','voice','files');
             }else{
-                $voice_path = $podcastList->voice;
+                $voice_path = $podcast->voice;
             }
             if(!empty($request->text_file)){
                 $text_file_path = $this->UploadFile($request,'voice_text','text','files');
             }else{
-                $text_file_path = $podcastList->text_file;
+                $text_file_path = $podcast->text_file;
             }
 
             $podcast->update([
