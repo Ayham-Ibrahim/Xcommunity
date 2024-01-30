@@ -12,10 +12,13 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\UploadFileTrait;
 use App\Models\UserInterest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\DownloadFileTrait;
+use App\Models\User;
 
 class BookController extends Controller
 {
     use ApiResponseTrait,UploadFileTrait;
+    use DownloadFileTrait;
     /**
      * Display a listing of the resource.
      */
@@ -111,10 +114,11 @@ class BookController extends Controller
         }
     }
 
-    public function download(Book $book)
+    public function downloadFile(User $user,Book $book)
     {
         if($book){
-            return $this->downloadFile($book->file, 'books');
+            $user = Auth::user();
+            return $this->downloadFile($user,$book->file, 'books');
         }else{
             return $this->customeResponse(null,'book not found',404);
         }

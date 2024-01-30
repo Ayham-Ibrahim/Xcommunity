@@ -25,7 +25,7 @@ class JobResource extends JsonResource
             'email'          =>$this->email,
             'nationality'    =>$this->nationality,
             'gender'         =>$this->gender,
-            'image'          =>assets('photos/' . $this->image),
+            'image'          =>asset('photos/' . $this->image),
             // "section_id"   => $this->
         ];
     }

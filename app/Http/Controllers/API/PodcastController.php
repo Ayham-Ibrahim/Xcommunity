@@ -110,6 +110,7 @@ class PodcastController extends Controller
     public function toggleLike(User $user, Podcast $podcast)
     {
         if($podcast){
+            $user = Auth::user();
             return $podcast->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);

@@ -22,6 +22,7 @@ class BookResource extends JsonResource
             'image'            =>asset('photos' . $this->image),
             'visitors count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
+            'downloads'      =>$this->downloadsCount(),
             // "category_id"   => $this->
             // "section_id"    => $this->
         ];

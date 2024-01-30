@@ -7,6 +7,7 @@ use App\Models\ChildCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChildCategoryRequest;
 use App\Http\Resources\ChildCategoryResource;
+use App\Http\Traits\ApiResponseTrait;
 
 class ChildCategoryController extends Controller
 {

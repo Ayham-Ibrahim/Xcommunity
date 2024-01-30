@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Http\Traits\VisitorableTrait;
+use App\Http\Traits\FollowTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use willvincent\Rateable\Rateable;
 
-class PodcastList extends Model
-{
+
+    class PodcastList extends Model
+    {
     use HasFactory,SoftDeletes,VisitorableTrait,Rateable;
+    use FollowTrait;
 
     protected $fillable = [
         'title',
@@ -34,4 +37,9 @@ class PodcastList extends Model
     {
         return $this->morphMany(Visitor::class, 'visitorable');
     }
+    public function followers()
+    {
+        return $this->morphMany(Follow::class, 'followable');
+    }
+
 }

@@ -31,8 +31,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/send-mail-verification/{email}', [AuthController::class, 'sendVerifyEmail']);
+Route::get('/verify-email/{code}', [AuthController::class, 'emailVerification']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
+
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
@@ -62,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/delete-book/{book}',[BookController::class,'delete']);
     Route::get('/download-book/{book}',[BookController::class,'download']);
     Route::post('/bookRating/{book}',[BookController::class,'bookRating']);
+    Route::get('user/{user}/book/{book}/download-book',[BookController::class,'downloadFile']);
 
     Route::get('/article_groups', [ArticleGroupController::class, 'index']);
     Route::get('/article_group/{article_group}', [ArticleGroupController::class, 'show']);
@@ -105,8 +111,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::prefix('user/{user}')->group(function () {
+
+        // likes
         Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
         Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
+
+        // follow
+        Route::post('/articleGroup/{articleGroup}/follow-toggle', [ArticleGroupController::class, 'followGroup']);
+        Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
     });
 
 });

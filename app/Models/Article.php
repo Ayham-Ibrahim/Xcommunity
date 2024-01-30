@@ -27,7 +27,7 @@ class Article extends Model
 
     public function likes()
     {
-        return $this->morphMany(like::class, 'likable');
+        return $this->morphMany(like::class, 'likeable');
     }
     public function section()
     {

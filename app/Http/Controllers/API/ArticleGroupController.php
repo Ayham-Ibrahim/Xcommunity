@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleGroupRequest;
-use App\Http\Resources\ArticleGroupResource;
-use App\Http\Traits\ApiResponseTrait;
-use App\Http\Traits\UploadFileTrait;
+use App\Models\User;
 use App\Models\ArticleGroup;
-use App\Models\ChildCategory;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
+use App\Models\ChildCategory;
+use App\Http\Controllers\Controller;
+use App\Http\Traits\UploadFileTrait;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Requests\ArticleGroupRequest;
+use App\Http\Resources\ArticleGroupResource;
 
 class ArticleGroupController extends Controller
 {
@@ -103,5 +104,13 @@ class ArticleGroupController extends Controller
         $data = ArticleGroupResource::collection($interest_article_groups);
 
         return $this->customeResponse($data, 'Done!', 200);
+    }
+
+    public function followGroup(User $user,ArticleGroup $article_group){
+        if ($article_group) {
+            $user = Auth::user();
+            return $article_group->followToggle($user);
+        }
+        return $this->customeRespone(null, "ArticleGroup not found", 404);
     }
 }

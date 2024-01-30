@@ -25,6 +25,7 @@ class PodcastResource extends JsonResource
             "text_file"         => $this->assets('files/' . $this->text_file),
             "podcast_list_id"   => $this->podcastList,
             'visitors count'    => $this->visitorCount(),
+            'likes_count'       => $this->likesCount(),
             // "child_category_id"   => $this->
             // "section_id"   => $this->
         ];

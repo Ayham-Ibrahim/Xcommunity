@@ -21,6 +21,8 @@ class PodcastListResource extends JsonResource
             'image'            => asset('photos/'.$this->image),
             'visitors count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
+            'followers_count'   => $this->followersCount('like'),
+
             // 'child_category_id' =>
         ];
     }

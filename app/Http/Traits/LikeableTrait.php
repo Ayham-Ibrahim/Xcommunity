@@ -27,16 +27,27 @@ trait LikeableTrait
 
     public function isLikedByUser(User $user): bool
     {
-        return $this->likes()->where('user_id', $user->id)->exists();
+        return $this->likes()->where('user_id', $user->id)
+                    ->where('likable_id',$this->id)
+                    ->where('likable_type',get_class($this))
+                    ->exists();
     }
 
     private function addLike(User $user)
     {
-        $user->likes()->create([
-            'likeable_id' => $this->id,
-            'likeable_type' => get_class($this),
-            'reaction' => 'like',
-        ]);
+        $existingLike = $this->likes()->where([
+            'user_id'      => $user->id,
+            'likable_id'   => $this->id,
+            'likable_type' => get_class($this),
+        ])->first();
+
+        if (!$existingLike) {
+            $user->likes()->create([
+                'likable_id' => $this->id,
+                'likable_type' => get_class($this),
+            ]);
+        }
+
     }
 
     private function removeLike(User $user)
