@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/podcastList/{podcastList}',[PodcastListController::class,'show']);
     Route::put('/update-podcastList/{podcastList}',[PodcastListController::class,'update']);
     Route::delete('/delete-podcastList/{podcastList}',[PodcastListController::class,'delete']);
+    Route::post('/podcastListRating/{podcastList}',[PodcastListController::class,'podcastListRating']);
 
     Route::get('/jobs',[JobController::class,'index']);
     Route::post('/add-job',[JobController::class,'store']);
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/update-book/{book}',[BookController::class,'update']);
     Route::delete('/delete-book/{book}',[BookController::class,'delete']);
     Route::get('/download-book/{book}',[BookController::class,'download']);
+    Route::post('/bookRating/{book}',[BookController::class,'bookRating']);
 
     Route::get('/article_groups', [ArticleGroupController::class, 'index']);
     Route::get('/article_group/{article_group}', [ArticleGroupController::class, 'show']);
@@ -88,6 +90,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/delete_supplement/{supplement}', [SupplementController::class, 'destroy']);
     Route::get('/interest_supplements', [SupplementController::class, 'intersteSupplements']);
     Route::get('/download_supplement/{supplement}',[SupplementController::class,'download']);
+    Route::post('/supplementRating/{supplement}',[SupplementController::class,'supplementRating']);
 
     Route::get('/user_interests/{user}', [UserInterestController::class, 'index']);
     Route::post('/createOrUpdate_interests', [UserInterestController::class, 'createOrUpdate']);
