@@ -10,6 +10,7 @@ use App\Http\Traits\UploadFileTrait;
 use App\Models\Article;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
+use App\Models\User;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +58,8 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         if(!empty($article)){
+            $user = Auth::user();
+            $article->visit($user);
             $data = new ArticleResource($article);
             return $this->customeResponse($data, "Done!", 200);
         }
