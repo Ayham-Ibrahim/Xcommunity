@@ -6,13 +6,14 @@ use App\Models\Section;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
 use App\Http\Traits\LikeableTrait;
+use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait;
 
     protected $fillable = [
         'title',
@@ -41,6 +42,10 @@ class Article extends Model
     public function articleGroup()
     {
         return $this->belongsTo(ArticleGroup::class,'article_group_id', 'id');
+    }
+    public function visitorable()
+    {
+        return $this->morphMany(Visitor::class, 'visitorable');
     }
 
 }
