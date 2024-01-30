@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use App\Models\PodcastList;
+use App\Http\Traits\LikeableTrait;
+use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Podcast extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait;
 
     protected $fillable = [
         'title',
@@ -36,6 +38,13 @@ class Podcast extends Model
     {
         return $this->belongsTo(PodcastList::class);
     }
+    public function likes()
+    {
+        return $this->morphMany(like::class, 'likeable');
+    }
 
-
+    public function visitorable()
+    {
+        return $this->morphMany(Visitor::class, 'visitorable');
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Traits\UploadFileTrait;
 use App\Models\Article;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
+use App\Models\User;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class ArticleController extends Controller
 
         $data = new ArticleResource($article);
 
-        return $this->customeRespone($data, "Article Created Successfuly", 201);
+        return $this->customeResponse($data, "Article Created Successfuly", 201);
     }
 
     /**
@@ -57,10 +58,12 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         if(!empty($article)){
+            $user = Auth::user();
+            $article->visit($user);
             $data = new ArticleResource($article);
-            return $this->customeRespone($data, "Done!", 200);
+            return $this->customeResponse($data, "Done!", 200);
         }
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     /**
@@ -85,7 +88,7 @@ class ArticleController extends Controller
         $data = new ArticleResource($article);
 
 
-        return $this->customeRespone($data, "Article Updated Successfuly", 200);
+        return $this->customeResponse($data, "Article Updated Successfuly", 200);
     }
 
     /**
@@ -95,10 +98,10 @@ class ArticleController extends Controller
     {
         if (!empty($article)) {
             $article->delete();
-            return $this->customeRespone(null , "Article deleted successfully" , 200);
+            return $this->customeResponse(null , "Article deleted successfully" , 200);
         }
 
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     public function intersteArticles()
@@ -110,5 +113,16 @@ class ArticleController extends Controller
         $data = ArticleResource::collection($interest_articles);
 
         return $this->customeResponse($data, 'Done!', 200);
+    }
+
+
+    public function toggleLike(User $user,  Article $article)
+    {
+        if($article){
+            $user = Auth::user();
+            return $article->toggleLike($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+
     }
 }

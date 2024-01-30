@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\UploadFileTrait;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Requests\PodcastListRequest;
+use App\Http\Requests\RatingRequest;
+use App\Http\Resources\PodcastListResource;
+use App\Models\PodcastList;
+use Illuminate\Support\Facades\Auth;
 
 class PodcastListController extends Controller
 {
@@ -49,6 +54,8 @@ class PodcastListController extends Controller
     public function show(PodcastList $podcastList)
     {
         if($podcastList){
+            $user = Auth::user();
+            $podcastList->visit($user);
             return $this->customeResponse(new PodcastListResource($podcastList),'Done',200);
         }else{
             return $this->customeResponse(null,'podcastList not found',404);
@@ -82,7 +89,7 @@ class PodcastListController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PodcastList $podcastList)
     {
         if($podcastList){
             $podcastList->delete();
@@ -90,5 +97,25 @@ class PodcastListController extends Controller
         }else{
             return $this->customeResponse(null,'podcastList not found',404);
         }
+    }
+
+    public function podcastListRating (RatingRequest $request , PodcastList $podcastList)
+    {
+        if(!empty($podcastList)){
+            $rate = $request->rate;
+            $podcastList->rateOnce($rate);
+            $data = new PodcastListResource($podcastList);
+            return $this->customeResponse($data, 'Done!', 200);
+        }
+        return $this->customeResponse(null,'not found',404);
+    }
+
+    public function followList(User $user,PodcastList $podcastList){
+        if($podcastList){
+            $user = Auth::user();
+            return $podcastList->followToggle($user);
+        }
+        return $this->customeResponse(null,'podcastList not found',404);
+
     }
 }

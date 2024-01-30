@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Http\Traits\VisitorableTrait;
+use App\Models\Follow;
+use App\Http\Traits\FollowTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ArticleGroup extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,VisitorableTrait;
+    use FollowTrait;
 
     protected $fillable = [
         'name',
@@ -26,5 +30,15 @@ class ArticleGroup extends Model
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function visitorable()
+    {
+        return $this->morphMany(Visitor::class, 'visitorable');
+    }
+
+    public function followers()
+    {
+        return $this->morphMany(Follow::class, 'followable');
     }
 }

@@ -14,6 +14,16 @@ class SupplementResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $category = $this->category;
+        return [
+            'category'        => $category->nmae,
+            'title'           => $this->title,
+            'description'     => $this->description,
+            'file'            => asset('files/' . $this->file),
+            'image'           => asset('images/' . $this->image),
+            'visitors count'  => $this->visitorCount(),
+            'rating'          => $this->averageRating(),
+        ];
+
     }
 }

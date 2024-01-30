@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RatingRequest;
 use App\Http\Requests\SupplementRequest;
 use App\Http\Resources\SupplementResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -53,6 +54,8 @@ class SupplementController extends Controller
     public function show(Supplement $supplement)
     {
         if(!empty($supplement)){
+            $user = Auth::user();
+            $supplement->visit($user);
             $data = new SupplementResource($supplement);
             return $this->customeRespone($data, "Done!", 200);
         }
@@ -110,5 +113,26 @@ class SupplementController extends Controller
         $data = SupplementResource::collection($interest_supplements);
 
         return $this->customeResponse($data, 'Done!', 200);
+    }
+
+    public function download(Supplement $supplement)
+    {
+        if (!empty($supplement)) {
+            return $this->downloadFile($supplement->file, 'supplements');
+        }else{
+            return $this->customeResponse(null,'book not found',404);
+        }
+
+    }
+
+    public function supplementRating (RatingRequest $request , Supplement $supplement)
+    {
+        if(!empty($supplement)){
+            $rate = $request->rate;
+            $supplement->rateOnce($rate);
+            $data = new SupplementResource($supplement);
+            return $this->customeResponse($data, 'Done!', 200);
+        }
+        return $this->customeResponse(null,'not found',404);
     }
 }

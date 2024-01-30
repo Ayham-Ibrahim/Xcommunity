@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Requests\StoreUserRequest;
 
@@ -25,9 +30,22 @@ class AuthController extends Controller
             'password' => Hash::make($user['password']),
         ]);
 
-        $token = $user->createToken('authToken')->plainTextToken;
+        // create code
+        $code = sprintf("%06d", mt_rand(1, 999999));
+        // prepare message
+        $data['code'] = $code;
+        $data['email'] = $user->email;
+        $data['title'] = "Email verification";
+        $data['body']  = "Welcom To X-community";
+        // send mail to user
+        Mail::send('verifyEmail',['data'=>$data],function($message) use ($data){
+            $message->to($data['email'])->subject($data['title']);
+        });
 
-        return $this->apiResponse(new UserResource($user),$token,'registered successfully',200);
+        //save the code for user to compare
+        $user->remember_token = $code;
+        $user->save();
+        return $this->customeResponse(null,'Mail send successfuly',200);
 
     }
 
@@ -55,4 +73,21 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
+
+
+    public function emailVerification($code){
+        $user = User::where('remember_token',$code)->first();
+        if ($user) {
+            $user->remember_token = null;
+            $user->is_verified = 1;
+            $user->email_verified_at = now();
+            $token = $user->createToken('authToken')->plainTextToken;
+            $user->save();
+        }else{
+            return $this->customeResponse(null,'not found',404);
+        }
+        return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
+    }
+
 }
+
