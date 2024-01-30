@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Auth;
 
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +34,7 @@ class AuthController extends Controller
         $data['title'] = "Email verification";
         $data['body']  = "Welcom To X-community";
         // send mail to user
-        Mail::send('verifyEmail',['data'=>$data],function($message) use ($data){
+        Mail::send('email_interface',['data'=>$data],function($message) use ($data){
             $message->to($data['email'])->subject($data['title']);
         });
 

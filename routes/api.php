@@ -3,14 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\JobController;
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\PodcastController;
 use App\Http\Controllers\API\PodcastListController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ArticleGroupController;
-use App\Http\Controllers\API\SocialiteLoginController;
+use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\SocialiteLoginController;
 use App\Http\Controllers\API\SupplementController;
 use App\Http\Controllers\API\UserInfoController;
 use App\Http\Controllers\API\UserInterestController;
@@ -35,6 +36,10 @@ Route::post('/login', [AuthController::class, 'login']);
 // Route::get('/send-mail-verification/{email}', [AuthController::class, 'sendVerifyEmail']);
 Route::get('/verify-email/{code}', [AuthController::class, 'emailVerification']);
 
+Route::get('/sendRestEmail', [ResetPasswordController::class, 'sendRestEmail']);
+Route::post('/checkTheCode', [ResetPasswordController::class, 'checkTheCode']);
+Route::post('/reset', [ResetPasswordController::class, 'reset']);
+
 
 Route::get('login/{provider}', [SocialiteLoginController::class, 'redirectToProvider']);
 Route::get('login/{provider}/callback', [SocialiteLoginController::class, 'handleProviderCallback']);
@@ -44,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::post('/changePassword', [ResetPasswordController::class, 'changePassword']);
 
     Route::get('/podcasts',[PodcastController::class,'index']);
     Route::post('/add-podcast',[PodcastController::class,'store']);

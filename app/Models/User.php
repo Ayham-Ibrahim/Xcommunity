@@ -69,4 +69,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
     }
+
+
+    public function verificationCode()
+    {
+        return $this->hasOne(verificationCode::class, 'user_id', 'id');
+    }
 }
