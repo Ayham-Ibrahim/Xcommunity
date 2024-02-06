@@ -37,7 +37,7 @@ class BookController extends Controller
     {
         $Validation = $request->validated();
         if(!empty($request->image)){
-            $image_path = $this->UploadFile($request,'books','image','photos');
+            $image_path = $this->UploadFile($request,'books','image','images');
         }else{
             $image_path = null;
         }
@@ -50,7 +50,7 @@ class BookController extends Controller
             'file'            => $file_path,
             'description'     => $request->description,
             "category_id"     => $request->category_id,
-            "section_id"      => $request->section_id,
+            "section_id"      => 4,
         ]);
         return $this->customeResponse(new BookResource($book),'book created successfully',200);
 
@@ -77,7 +77,7 @@ class BookController extends Controller
     {
         if($book){
             if(!empty($request->image)){
-                $image_path = $this->UploadFile($request,'books','image','photos');
+                $image_path = $this->UploadFile($request,'books','image','images');
             }else{
                 $image_path = $book->image;
             }

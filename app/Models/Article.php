@@ -48,4 +48,8 @@ class Article extends Model
         return $this->morphMany(Visitor::class, 'visitorable');
     }
 
+    public function archives()
+    {
+        return $this->morphMany(UserListArchive::class, 'saveable');
+    }
 }

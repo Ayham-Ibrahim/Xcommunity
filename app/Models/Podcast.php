@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\PodcastList;
+use App\Models\UserListArchive;
 use App\Http\Traits\LikeableTrait;
 use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -46,5 +47,10 @@ class Podcast extends Model
     public function visitorable()
     {
         return $this->morphMany(Visitor::class, 'visitorable');
+    }
+
+    public function archives()
+    {
+        return $this->morphMany(UserListArchive::class, 'saveable');
     }
 }

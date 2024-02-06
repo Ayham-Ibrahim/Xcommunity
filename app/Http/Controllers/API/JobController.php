@@ -42,7 +42,7 @@ class JobController extends Controller
             "email"           => $request->email,
             "nationality"     => $request->nationality,
             "gender"          => $request->gender,
-            "section_id"      => $request->section_id,
+            "section_id"      => 5,
         ]);
         return $this->customeResponse(new JobResource($job),'job created successfully',200);
 

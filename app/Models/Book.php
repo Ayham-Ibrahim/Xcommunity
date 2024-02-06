@@ -42,4 +42,9 @@ class Book extends Model
     {
         return $this->morphMany(Download::class, 'downlaodable');
     }
+
+    public function archives()
+    {
+        return $this->morphMany(UserListArchive::class, 'saveable');
+    }
 }
