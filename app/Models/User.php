@@ -3,15 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use App\Models\Like;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
+use Spatie\Permission\Contracts\Permission;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +27,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'is_admin',
+        'role_name',
         'password',
     ];
 
@@ -42,8 +50,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        // 'roles_name' => 'array',
     ];
 
+    public function canAccessPanel(Panel $panel): bool {
+        // return str_ends_with($this->email, '@admin.com' );
+        return $this->is_admin === 1;
+
+    }
 
     public function likes()
     {

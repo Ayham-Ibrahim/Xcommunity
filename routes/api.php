@@ -3,19 +3,21 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\JobController;
-use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\BookController;
-use App\Http\Controllers\API\PodcastController;
-use App\Http\Controllers\API\PodcastListController;
-use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\PodcastController;
+use App\Http\Controllers\API\UserInfoController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\SupplementController;
+use App\Http\Controllers\API\PodcastListController;
 use App\Http\Controllers\API\ArticleGroupController;
+use App\Http\Controllers\API\UserInterestController;
+use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\SocialiteLoginController;
 use App\Http\Controllers\API\SearchController;
-use App\Http\Controllers\API\SupplementController;
-use App\Http\Controllers\API\UserInfoController;
-use App\Http\Controllers\API\UserInterestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -121,15 +123,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/serch/{search_param}', [SearchController::class, 'search']);
 
 
-    Route::prefix('user/{user}')->group(function () {
 
-        // likes
-        Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
-        Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
 
-        // follow
-        Route::post('/articleGroup/{articleGroup}/follow-toggle', [ArticleGroupController::class, 'followGroup']);
-        Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
-    });
+    // likes
+    Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
+    Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
+
+    // follow
+    Route::post('/articleGroup/{articleGroup}/follow-toggle', [ArticleGroupController::class, 'followGroup']);
+    Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
+
+
+
+
+    Route::post('/store-token', [NotificationController::class, 'updateDeviceToken']);
+    Route::post('/send-web-notification', [NotificationController::class, 'sendNotification']);
+
 
 });

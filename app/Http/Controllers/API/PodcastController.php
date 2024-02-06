@@ -38,7 +38,7 @@ class PodcastController extends Controller
             "duration"          => $request->duration,
             "text_file"         => $text_file_path,
             "podcast_list_id"   => $request->podcast_list_id,
-            "section_id"        => $request->section_id,
+            "section_id"        => 2,
         ]);
 
         return $this->customeResponse(new PodcastResource($podcast),'podcast created successfully',200);

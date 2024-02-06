@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleRequest;
-use App\Http\Resources\ArticleResource;
-use App\Http\Traits\ApiResponseTrait;
-use App\Http\Traits\UploadFileTrait;
-use App\Models\Article;
-use App\Models\ArticleGroup;
-use App\Models\ChildCategory;
 use App\Models\User;
+use App\Models\Article;
+use App\Models\UserList;
+use App\Models\ArticleGroup;
 use App\Models\UserInterest;
 use Illuminate\Http\Request;
+use App\Models\ChildCategory;
+use App\Models\UserListArchive;
+use App\Http\Controllers\Controller;
+use App\Http\Traits\UploadFileTrait;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ArticleRequest;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Resources\ArticleResource;
 
 class ArticleController extends Controller
 {
@@ -116,12 +118,25 @@ class ArticleController extends Controller
     }
 
 
-    public function toggleLike(User $user,  Article $article)
+    public function toggleLike(Article $article)
     {
         if($article){
             $user = Auth::user();
             $activity = activity()->causedBy($user)->log('You liked the article about '. $article->title);
             return $article->toggleLike($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+
+    }
+
+    public function saveToList(User $user,UserList $userList, Article $article)
+    {
+        if($article){
+            if($userList){
+                $user = Auth::user();
+                return $article->saveToList($user,$userList);
+            }
+            return $this->customeResponse(null, "userlist  not found", 404);
         }
         return $this->customeResponse(null, "not found", 404);
 
