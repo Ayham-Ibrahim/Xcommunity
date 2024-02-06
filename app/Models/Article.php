@@ -10,10 +10,11 @@ use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,Searchable;
 
     protected $fillable = [
         'title',
@@ -24,6 +25,15 @@ class Article extends Model
         'section_id',
         'article_group_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'        => $this->title,
+            'body'         => $this->body,
+            'time_to_read' => $this->time_to_read,
+        ];
+    }
 
     public function likes()
     {

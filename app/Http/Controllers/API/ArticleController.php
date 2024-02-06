@@ -122,6 +122,7 @@ class ArticleController extends Controller
     {
         if($article){
             $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You liked the article about '. $article->title);
             return $article->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);

@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "content-hash": "b48a2e9b2936c1d286082a479e5af11b",
+=======
     "content-hash": "7a67376048bb4b3a0f6ec6398baeaae9",
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2532,6 +2536,83 @@
             "time": "2023-12-19T18:44:48+00:00"
         },
         {
+            "name": "laravel/scout",
+            "version": "v10.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/scout.git",
+                "reference": "4b5766ac110ef116c6571f4b3a29193bfd01c27c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/4b5766ac110ef116c6571f4b3a29193bfd01c27c",
+                "reference": "4b5766ac110ef116c6571f4b3a29193bfd01c27c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/bus": "^9.0|^10.0|^11.0",
+                "illuminate/contracts": "^9.0|^10.0|^11.0",
+                "illuminate/database": "^9.0|^10.0|^11.0",
+                "illuminate/http": "^9.0|^10.0|^11.0",
+                "illuminate/pagination": "^9.0|^10.0|^11.0",
+                "illuminate/queue": "^9.0|^10.0|^11.0",
+                "illuminate/support": "^9.0|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "^3.2",
+                "meilisearch/meilisearch-php": "^1.0",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^7.31|^8.11|^9.0",
+                "php-http/guzzle7-adapter": "^1.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.3|^10.4",
+                "typesense/typesense-php": "^4.9"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^3.2).",
+                "meilisearch/meilisearch-php": "Required to use the Meilisearch engine (^1.0).",
+                "typesense/typesense-php": "Required to use the Typesense engine (^4.9)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "10.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Scout\\ScoutServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Scout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Scout provides a driver based solution to searching your Eloquent models.",
+            "keywords": [
+                "algolia",
+                "laravel",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/scout/issues",
+                "source": "https://github.com/laravel/scout"
+            },
+            "time": "2024-01-30T18:52:49+00:00"
+        },
+        {
             "name": "laravel/serializable-closure",
             "version": "v1.3.3",
             "source": {
@@ -5035,6 +5116,32 @@
             "time": "2023-11-08T05:53:05+00:00"
         },
         {
+<<<<<<< HEAD
+            "name": "spatie/laravel-activitylog",
+            "version": "4.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-activitylog.git",
+                "reference": "ec65a478a909b8df1b4f0c3c45de2592ca7639e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/ec65a478a909b8df1b4f0c3c45de2592ca7639e5",
+                "reference": "ec65a478a909b8df1b4f0c3c45de2592ca7639e5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "^8.0 || ^9.0 || ^10.0",
+                "illuminate/database": "^8.69 || ^9.27 || ^10.0",
+                "illuminate/support": "^8.0 || ^9.0 || ^10.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.6.3"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "orchestra/testbench": "^6.23 || ^7.0 || ^8.0",
+                "pestphp/pest": "^1.20"
+=======
             "name": "ryangjchandler/blade-capture-directive",
             "version": "v0.3.0",
             "source": {
@@ -5064,11 +5171,24 @@
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpunit/phpunit": "^9.5",
                 "spatie/laravel-ray": "^1.26"
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
+<<<<<<< HEAD
+                        "Spatie\\Activitylog\\ActivitylogServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Activitylog\\": "src"
+=======
                         "RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider"
                     ],
                     "aliases": {
@@ -5200,6 +5320,7 @@
                 ],
                 "psr-4": {
                     "Spatie\\Invade\\": "src"
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5210,6 +5331,43 @@
                 {
                     "name": "Freek Van der Herten",
                     "email": "freek@spatie.be",
+<<<<<<< HEAD
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tom Witkowski",
+                    "email": "dev.gummibeer@gmail.com",
+                    "homepage": "https://gummibeer.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A very simple activity logger to monitor the users of your website or application",
+            "homepage": "https://github.com/spatie/activitylog",
+            "keywords": [
+                "activity",
+                "laravel",
+                "log",
+                "spatie",
+                "user"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-activitylog/issues",
+                "source": "https://github.com/spatie/laravel-activitylog/tree/4.7.3"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+=======
                     "role": "Developer"
                 }
             ],
@@ -5224,11 +5382,16 @@
             },
             "funding": [
                 {
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
                     "url": "https://github.com/spatie",
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2023-01-25T17:04:51+00:00"
+=======
             "time": "2023-07-19T18:55:36+00:00"
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -5291,6 +5454,8 @@
             "time": "2024-01-11T08:43:00+00:00"
         },
         {
+<<<<<<< HEAD
+=======
             "name": "spatie/laravel-permission",
             "version": "6.3.0",
             "source": {
@@ -5373,6 +5538,7 @@
             "time": "2023-12-24T06:58:02+00:00"
         },
         {
+>>>>>>> 4df01b989a86cb1f35fa987c4c48144443e661ab
             "name": "symfony/console",
             "version": "v6.4.2",
             "source": {

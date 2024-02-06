@@ -7,11 +7,12 @@ use App\Models\Download;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 use willvincent\Rateable\Rateable;
 
 class Supplement extends Model
 {
-    use HasFactory,SoftDeletes,VisitorableTrait,Rateable;
+    use HasFactory,SoftDeletes,VisitorableTrait,Rateable,Searchable;
 
     protected $fillable = [
         'title',
@@ -21,6 +22,14 @@ class Supplement extends Model
         'category_id',
         'section_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'       => $this->title,
+            'description' => $this->description,
+        ];
+    }
 
     public function section()
     {

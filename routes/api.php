@@ -16,6 +16,8 @@ use App\Http\Controllers\API\UserInterestController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\SocialiteLoginController;
+use App\Http\Controllers\API\SearchController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -118,7 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_user_info/{user_info}', [UserInfoController::class, 'update']);
     Route::delete('/delete_user_info/{user_info}', [UserInfoController::class, 'destroy']);
 
-
+    Route::get('/serch/{search_param}', [SearchController::class, 'search']);
 
 
 

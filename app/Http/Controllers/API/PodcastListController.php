@@ -102,9 +102,11 @@ class PodcastListController extends Controller
     public function podcastListRating (RatingRequest $request , PodcastList $podcastList)
     {
         if(!empty($podcastList)){
+            $user = Auth::user();
             $rate = $request->rate;
             $podcastList->rateOnce($rate);
             $data = new PodcastListResource($podcastList);
+            $activity = activity()->causedBy($user)->log('You have rated a podcast list about '. $podcastList->title);
             return $this->customeResponse($data, 'Done!', 200);
         }
         return $this->customeResponse(null,'not found',404);
@@ -113,6 +115,7 @@ class PodcastListController extends Controller
     public function followList(User $user,PodcastList $podcastList){
         if($podcastList){
             $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You have followed a podcast list about '. $podcastList->title);
             return $podcastList->followToggle($user);
         }
         return $this->customeResponse(null,'podcastList not found',404);

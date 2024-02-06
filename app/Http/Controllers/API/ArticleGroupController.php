@@ -108,7 +108,8 @@ class ArticleGroupController extends Controller
 
     public function followGroup(User $user,ArticleGroup $article_group){
         if ($article_group) {
-            $user = Auth::user();
+            $user = Auth::user();$activity = activity()->causedBy($user)->log('You have followed a group of articles about '. $article_group->name);
+
             return $article_group->followToggle($user);
         }
         return $this->customeRespone(null, "ArticleGroup not found", 404);

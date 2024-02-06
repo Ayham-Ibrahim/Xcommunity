@@ -111,6 +111,7 @@ class PodcastController extends Controller
     {
         if($podcast){
             $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You liked the podcast about '. $podcast->title);
             return $podcast->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);
