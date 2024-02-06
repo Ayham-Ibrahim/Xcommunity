@@ -118,6 +118,7 @@ class BookController extends Controller
     {
         if($book){
             $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You have downloaded a book about '. $book->title);
             return $this->downloadFile($user,$book->file, 'books');
         }else{
             return $this->customeResponse(null,'book not found',404);
@@ -138,9 +139,11 @@ class BookController extends Controller
     public function bookRating (RatingRequest $request , Book $book)
     {
         if(!empty($book)){
+            $user = Auth::user();
             $rate = $request->rate;
             $book->rateOnce($rate);
             $data = new BookResource($book);
+            $activity = activity()->causedBy($user)->log('You have rated a book about '. $book->title);
             return $this->customeResponse($data, 'Done!', 200);
         }
         return $this->customeResponse(null,'not found',404);

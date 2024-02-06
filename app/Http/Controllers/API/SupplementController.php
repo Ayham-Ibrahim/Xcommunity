@@ -118,6 +118,8 @@ class SupplementController extends Controller
     public function download(Supplement $supplement)
     {
         if (!empty($supplement)) {
+            $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You have downloaded a supplement about '. $supplement->title);
             return $this->downloadFile($supplement->file, 'supplements');
         }else{
             return $this->customeResponse(null,'book not found',404);
@@ -128,9 +130,11 @@ class SupplementController extends Controller
     public function supplementRating (RatingRequest $request , Supplement $supplement)
     {
         if(!empty($supplement)){
+            $user = Auth::user();
             $rate = $request->rate;
             $supplement->rateOnce($rate);
             $data = new SupplementResource($supplement);
+            $activity = activity()->causedBy($user)->log('You have rated a supplement about'. $supplement->title);
             return $this->customeResponse($data, 'Done!', 200);
         }
         return $this->customeResponse(null,'not found',404);

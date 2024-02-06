@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class ArticleGroup extends Model
 {
-    use HasFactory,SoftDeletes,VisitorableTrait;
+    use HasFactory,SoftDeletes,VisitorableTrait,Searchable;
     use FollowTrait;
 
     protected $fillable = [
@@ -21,6 +22,14 @@ class ArticleGroup extends Model
         'group_info',
         'child_category_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name'       => $this->name,
+            'group_info' => $this->group_info,
+        ];
+    }
 
     public function childCategory(): BelongsTo
     {
