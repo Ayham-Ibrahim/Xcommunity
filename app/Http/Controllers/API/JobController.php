@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\JobRequest;
 use App\Http\Resources\JobResource;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -101,5 +102,14 @@ class JobController extends Controller
         }else{
             return $this->customeResponse(null,'job not found',404);
         }
+    }
+
+    public function savetoArchive(Job $job)
+    {
+        if (!empty($job)) {
+            $user = Auth::user();
+            return $job->saveToArvhive($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
     }
 }

@@ -23,15 +23,11 @@ class Category extends Model
         return $this->hasMany(ChildCategory::class, 'category_id', 'id');
     }
 
-    public function supplements(): HasMany
+    public function stores(): HasMany
     {
-        return $this->hasMany(Supplement::class);
+        return $this->hasMany(Store::class);
     }
 
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
 
     public function users()
     {
