@@ -18,6 +18,7 @@ use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\SocialiteLoginController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\StoreController;
+use App\Http\Controllers\SaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -202,7 +203,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/articleGroup/{articleGroup}/follow-toggle', [ArticleGroupController::class, 'followGroup']);
     Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
 
-
+    // Show Archive
+    Route::get('/showUserArchiveItem' , [SaveController::class, 'showUserArchiveItem']);
 
 
     Route::post('/store-token', [NotificationController::class, 'updateDeviceToken']);
