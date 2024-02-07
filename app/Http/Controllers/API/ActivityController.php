@@ -21,4 +21,13 @@ class ActivityController extends Controller
         $data = ActivityResource::collection($activity);
         return $this->customeResponse($data, 'Done!', 200);
     }
+
+    public function destroyActivity(Activity $activity)
+    {
+        if(!empty($activity)){
+            $activity->delete();
+            return $this->customeResponse(null, "Activity deleted successfully", 200);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
 }
