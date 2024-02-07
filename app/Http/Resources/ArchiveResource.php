@@ -25,7 +25,7 @@ class ArchiveResource extends JsonResource
 
         return [
             "id"    => $this->id,
-            'item' => $userItem,
+            'item'  => $userItem,
         ];
     }
 }

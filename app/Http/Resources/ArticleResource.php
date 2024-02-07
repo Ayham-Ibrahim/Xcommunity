@@ -18,14 +18,15 @@ class ArticleResource extends JsonResource
         $article_group = $this->articleGroup;
         $child_category = $this->childCategory;
         return [
+            'id'                   => $this->id,
             'article'              => $article_group->name,
-            'child category'       => $child_category->name,
+            'child_category'       => $child_category->name,
             'title'                => $this->title,
             'body'                 => $this->body,
             'time_to_read'         => $this->time_to_read,
             'image'                => asset('images/' . $this->image),
             'timeSincePublication' => Carbon::parse($this->created_at)->diffForHumans(),
-            'visitors count'       => $this->visitorCount()
+            'visitors_count'       => $this->visitorCount()
         ];
     }
 }

@@ -16,12 +16,13 @@ class StoreResource extends JsonResource
     {
         $category = $this->category;
         return [
+            'id'              => $this->id,
             'category'        => $category->nmae,
             'title'           => $this->title,
             'description'     => $this->description,
             'file'            => asset('files/' . $this->file),
             'image'           => asset('images/' . $this->image),
-            'visitors count'  => $this->visitorCount(),
+            'visitors_count'  => $this->visitorCount(),
             'rating'          => $this->averageRating(),
         ];
 
