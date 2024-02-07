@@ -17,6 +17,7 @@ class AdvertismaentResource extends JsonResource
     {
         $section = Section::find($this->section_id);
         return [
+            'id'                 => $this->id,
             'title'              => $this->title,
             'discripton'         => $this->discripton,
             'trainning_topics'   => $this->trainning_topics,
