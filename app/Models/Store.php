@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\UserArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use App\Models\Category;
 use App\Models\Download;
@@ -11,15 +12,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use willvincent\Rateable\Rateable;
 
-class Book extends Model
+class Store extends Model
 {
-    use HasFactory,SoftDeletes,VisitorableTrait,Rateable,Searchable;
+    use HasFactory,SoftDeletes,VisitorableTrait,Rateable,Searchable,UserArchiveTrait;
 
     protected $fillable = [
         'title',
         'image',
         'description',
         'file',
+        'type',
         'category_id',
         'section_id',
     ];
@@ -52,8 +54,13 @@ class Book extends Model
         return $this->morphMany(Download::class, 'downlaodable');
     }
 
-    public function archives()
+    public function userLestArchives()
     {
         return $this->morphMany(UserListArchive::class, 'saveable');
+    }
+
+    public function archives()
+    {
+        return $this->morphMany(Archive::class, 'saveable');
     }
 }

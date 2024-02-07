@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\PodcastList;
 use App\Models\UserListArchive;
 use App\Http\Traits\LikeableTrait;
+use App\Http\Traits\UserArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Podcast extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,UserArchiveTrait;
 
     protected $fillable = [
         'title',
@@ -49,8 +50,13 @@ class Podcast extends Model
         return $this->morphMany(Visitor::class, 'visitorable');
     }
 
-    public function archives()
+    public function userLestArchives()
     {
         return $this->morphMany(UserListArchive::class, 'saveable');
+    }
+
+    public function archives()
+    {
+        return $this->morphMany(Archive::class, 'saveable');
     }
 }

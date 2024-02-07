@@ -117,4 +117,13 @@ class PodcastController extends Controller
         return $this->customeResponse(null, "not found", 404);
 
     }
+
+    public function savetoArchive(Podcast $podcast)
+    {
+        if (!empty($podcast)) {
+            $user = Auth::user();
+            return $podcast->saveToArvhive($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
 }
