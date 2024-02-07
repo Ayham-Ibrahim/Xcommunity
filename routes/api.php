@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ActivityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\JobController;
@@ -193,7 +194,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/serch/{search_param}', [SearchController::class, 'search']);
 
 
-
+    // ACTIVITY
+    Route::get('/yourActivity', [ActivityController::class, 'yourActivity']);
+    Route::delete('/destroyActivity', [ActivityController::class, 'destroyActivity']);
 
     // likes
     Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
