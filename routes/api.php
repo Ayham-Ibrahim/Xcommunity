@@ -17,6 +17,7 @@ use App\Http\Controllers\API\UserInterestController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\SocialiteLoginController;
+use App\Http\Controllers\API\PlatformController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\StoreController;
 use App\Http\Controllers\SaveController;
@@ -185,6 +186,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create_user_info', [UserInfoController::class, 'store']);
     Route::post('/update_user_info/{user_info}', [UserInfoController::class, 'update']);
     Route::delete('/delete_user_info/{user_info}', [UserInfoController::class, 'destroy']);
+
+    #######################################################################################################
+    #######################################################################################################
+    #######################################################################################################
+
+    #######################################################################################################
+    ######################################## PLATFORM CONTROLLER ##########################################
+    #######################################################################################################
+
+    Route::get('/platforms', [PlatformController::class, 'index']);
+    Route::get('/platform/{platform}', [PlatformController::class, 'show']);
+    Route::post('/add_platform', [PlatformController::class, 'store']);
 
     #######################################################################################################
     #######################################################################################################
