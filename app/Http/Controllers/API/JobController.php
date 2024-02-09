@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\JobRequest;
 use App\Http\Resources\JobResource;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\NotificationTrait;
 
 class JobController extends Controller
 {
+    use NotificationTrait;
     /**
      * Display a listing of the resource.
      */
@@ -44,6 +46,10 @@ class JobController extends Controller
             "gender"          => $request->gender,
             "section_id"      => 5,
         ]);
+
+        // $notification = $this->sendNotification('new book','X-community managmet add new job',$job->id);
+
+
         return $this->customeResponse(new JobResource($job),'job created successfully',200);
 
     }

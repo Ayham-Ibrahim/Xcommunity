@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ArticleGroupResource\Pages;
+namespace App\Filament\Resources\AdvertismaentResource\Pages;
 
-use App\Filament\Resources\ArticleGroupResource;
+use App\Filament\Resources\AdvertismaentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditArticleGroup extends EditRecord
+class EditAdvertismaent extends EditRecord
 {
-    protected static string $resource = ArticleGroupResource::class;
+    protected static string $resource = AdvertismaentResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -18,6 +18,7 @@ class EditArticleGroup extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
 
     protected function getRedirectUrl(): string {
         return $this->getResource()::getUrl('index');

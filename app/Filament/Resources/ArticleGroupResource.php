@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ArticleGroupResource\Pages;
 use App\Filament\Resources\ArticleGroupResource\RelationManagers;
 use App\Models\ArticleGroup;
+use App\Models\ChildCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,12 +27,16 @@ class ArticleGroupResource extends Resource
             ->schema([
                 Forms\Components\Select::make('child_category_id')
                     ->relationship('childCategory', 'id')
+                    ->options(ChildCategory::pluck('name','id')->all())
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->directory('images/article_groups')
+                    ->preserveFilenames()
+                    ->enableOpen()
                     ->required(),
                 Forms\Components\Textarea::make('group_info')
                     ->required()
@@ -44,8 +49,8 @@ class ArticleGroupResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('childCategory.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('childCategory.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

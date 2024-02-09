@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePodcast extends CreateRecord
 {
     protected static string $resource = PodcastResource::class;
+
+    protected function getRedirectUrl(): string {
+        return $this->getResource()::getUrl('index');
+    }
 }

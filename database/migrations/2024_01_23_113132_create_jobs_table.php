@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('skills');
             $table->string('age');
             $table->string('job_type');
-            $table->enum('gender', ['male', 'female', 'no profrence']);
+            $table->string('gender');
             $table->string('email');
             $table->string('nationality');
             $table->softDeletes();
