@@ -19,12 +19,13 @@ class ArticleGroupResource extends JsonResource
         $category = $category_child->category();
         $articles = $this->articles;
         return [
+            'id'               => $this->id,
             'name'             => $this->name,
             'group_info'       => $this->group_info,
             'image'            => asset('images/' . $this->image),
             'category'         => $category->name,
-            'articles count'   => $articles->count(),
-            'visitors count'   => $this->visitorCount()
+            'articles_count'   => $articles->count(),
+            'visitors_count'   => $this->visitorCount()
         ];
     }
 }

@@ -59,7 +59,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        if(!empty($article)){
+        if (!empty($article)) {
             $user = Auth::user();
             $article->visit($user);
             $data = new ArticleResource($article);
@@ -100,7 +100,7 @@ class ArticleController extends Controller
     {
         if (!empty($article)) {
             $article->delete();
-            return $this->customeResponse(null , "Article deleted successfully" , 200);
+            return $this->customeResponse(null, "Article deleted successfully", 200);
         }
 
         return $this->customeResponse(null, "not found", 404);
@@ -120,24 +120,32 @@ class ArticleController extends Controller
 
     public function toggleLike(Article $article)
     {
-        if($article){
+        if ($article) {
             $user = Auth::user();
+            $activity = activity()->causedBy($user)->log('You liked the article about ' . $article->title);
             return $article->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);
-
     }
 
-    public function saveToList(User $user,UserList $userList, Article $article)
+    public function saveToList(User $user, UserList $userList, Article $article)
     {
-        if($article){
-            if($userList){
+        if ($article) {
+            if ($userList) {
                 $user = Auth::user();
-                return $article->saveToList($user,$userList);
+                return $article->saveToList($user, $userList);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
         return $this->customeResponse(null, "not found", 404);
+    }
 
+    public function savetoArchive(Article $article)
+    {
+        if (!empty($article)) {
+            $user = Auth::user();
+            return $article->saveToArvhive($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
     }
 }

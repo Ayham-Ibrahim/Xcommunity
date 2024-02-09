@@ -19,6 +19,7 @@ class UserInterestResource extends JsonResource
         $user = User::find($this->user_id);
         $category = Category::find($this->category_id);
         return [
+            'id'        => $this->id,
             'user'      => new UserResource($user),
             'category'  => new CategoryResource($category),
         ];

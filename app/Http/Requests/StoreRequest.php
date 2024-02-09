@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplementRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +27,10 @@ class SupplementRequest extends FormRequest
             'discription'  => 'required|string',
             'image'        => 'nullable|image|mimes:png,jpg,jpeg,gif,sug|max:2048',
             'file'         => 'nullable|mimes:pdf,doc,docx|max:2048',
+            'type'         => [
+                'required',
+                Rule::in(['Book', 'Supplement']),
+            ],
             'category_id'  => 'required|integer|exists:categories,id'
         ];
     }

@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Http\Traits\UserArchiveTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Job extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable, UserArchiveTrait;
 
     protected $fillable = [
         'section_id',
@@ -24,8 +26,27 @@ class Job extends Model
         'nationality',
     ];
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'       => $this->title,
+            'description' => $this->description,
+            'tasks'       => $this->tasks,
+            'skills'      => $this->skills,
+            'age'         => $this->age,
+            'job_type'    => $this->job_type,
+            'gender'      => $this->gender,
+            'nationality' => $this->nationality,
+        ];
+    }
+
     public function section()
     {
         return $this->belongsTo(Section::class);
+    }
+
+    public function archives()
+    {
+        return $this->morphMany(Archive::class, 'saveable');
     }
 }

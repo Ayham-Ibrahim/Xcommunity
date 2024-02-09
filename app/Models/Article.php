@@ -6,14 +6,16 @@ use App\Models\Section;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
 use App\Http\Traits\LikeableTrait;
+use App\Http\Traits\UserArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,Searchable,UserArchiveTrait;
 
     protected $fillable = [
         'title',
@@ -24,6 +26,15 @@ class Article extends Model
         'section_id',
         'article_group_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'        => $this->title,
+            'body'         => $this->body,
+            'time_to_read' => $this->time_to_read,
+        ];
+    }
 
     public function likes()
     {
@@ -48,8 +59,15 @@ class Article extends Model
         return $this->morphMany(Visitor::class, 'visitorable');
     }
 
-    public function archives()
+    public function userLestArchives()
     {
         return $this->morphMany(UserListArchive::class, 'saveable');
     }
+
+    public function archives()
+    {
+        return $this->morphMany(Archive::class, 'saveable');
+    }
+
+
 }

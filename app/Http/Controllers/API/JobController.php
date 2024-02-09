@@ -108,4 +108,13 @@ class JobController extends Controller
             return $this->customeResponse(null,'job not found',404);
         }
     }
+
+    public function savetoArchive(Job $job)
+    {
+        if (!empty($job)) {
+            $user = Auth::user();
+            return $job->saveToArvhive($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
 }

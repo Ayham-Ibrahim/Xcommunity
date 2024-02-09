@@ -104,4 +104,12 @@ class AdvertismaentController extends Controller
         return $this->customeRespone(null, "not found", 404);
     }
 
+    public function savetoArchive(Advertismaent $Advertismaent)
+    {
+        if (!empty($Advertismaent)) {
+            $user = Auth::user();
+            return $Advertismaent->saveToArvhive($user);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
 }
