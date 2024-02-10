@@ -31,10 +31,7 @@ class JobRequest extends FormRequest
             'job_type'       => 'required|string|max:200',
             'email'          => 'required|string|max:200',
             'nationality'    => 'required|string|max:200',
-            'gender'         => [
-                'required',
-                Rule::in(['male', 'female', 'no profrence']),
-            ],
+            'gender'         => 'required|string|max:200',
             'image'          => 'nullable|image|mimes:png,jpg,jpeg,gif,sug|max:2048',
             'section_id'     => 'required|exists:sections,id',
 

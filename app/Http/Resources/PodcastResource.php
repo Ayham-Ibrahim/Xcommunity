@@ -17,6 +17,9 @@ class PodcastResource extends JsonResource
     {
         $podcastList_id = $this->podcastList_id;
         $podcastList = PodcastList::where('id',$podcastList_id)->first;
+        $section = Section::find($this->section_id);
+        $child_category = $this->childCategory;
+
         return [
             "id"                =>$this->id,
             "title"             => $this->title,
@@ -26,8 +29,8 @@ class PodcastResource extends JsonResource
             "podcast_list_id"   => $this->podcastList,
             'visitors_count'    => $this->visitorCount(),
             'likes_count'       => $this->likesCount(),
-            // "child_category_id"   => $this->
-            // "section_id"   => $this->
+            'child_category'    => $child_category->name,
+            'section'           => $section->name,
         ];
     }
 }

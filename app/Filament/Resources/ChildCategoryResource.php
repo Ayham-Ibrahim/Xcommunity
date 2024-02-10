@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ChildCategoryResource\Pages;
-use App\Filament\Resources\ChildCategoryResource\RelationManagers;
-use App\Models\ChildCategory;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Category;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ChildCategory;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ChildCategoryResource\Pages;
+use App\Filament\Resources\ChildCategoryResource\RelationManagers;
 
 class ChildCategoryResource extends Resource
 {
@@ -20,24 +22,31 @@ class ChildCategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Admin Management';
 
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('category_id')
+            Select::make('category_id')
+                ->label('category')
+                ->options(Category::pluck('name','id')->all())
+                ->required(),
+            Forms\Components\TextInput::make('name')
                     ->required()
-                    ->numeric(),
+                    ->maxLength(255),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category_id')
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

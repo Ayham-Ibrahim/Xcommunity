@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SupplementResource\Pages;
-use App\Filament\Resources\SupplementResource\RelationManagers;
-use App\Models\Supplement;
+use App\Filament\Resources\AdvertismaentResource\Pages;
+use App\Filament\Resources\AdvertismaentResource\RelationManagers;
+use App\Models\Advertismaent;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SupplementResource extends Resource
+class AdvertismaentResource extends Resource
 {
-    protected static ?string $model = Supplement::class;
+    protected static ?string $model = Advertismaent::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-paper-clip';
+    protected static ?string $navigationIcon = 'heroicon-s-megaphone';
+
     protected static ?string $navigationGroup = 'Sections';
 
 
@@ -25,25 +26,41 @@ class SupplementResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('category_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('section_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
+                Forms\Components\TextInput::make('section_id')
+                    ->default(3)
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\Textarea::make('discription')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('file')
+                Forms\Components\Textarea::make('trainning_topics')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('details')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('tarinning_outcomes')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('reservation')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('cost')
+                    ->required()
+                    ->numeric()
+                    ->prefix('$'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('images/advertisment')
+                    ->preserveFilenames()
+                    ->enableOpen()
+                    ->required(),
             ]);
     }
 
@@ -51,16 +68,16 @@ class SupplementResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('section_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('file')
+                Tables\Columns\TextColumn::make('cost')
+                    ->money()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('reservation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
@@ -100,9 +117,9 @@ class SupplementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSupplements::route('/'),
-            'create' => Pages\CreateSupplement::route('/create'),
-            'edit' => Pages\EditSupplement::route('/{record}/edit'),
+            'index' => Pages\ListAdvertismaents::route('/'),
+            'create' => Pages\CreateAdvertismaent::route('/create'),
+            'edit' => Pages\EditAdvertismaent::route('/{record}/edit'),
         ];
     }
 

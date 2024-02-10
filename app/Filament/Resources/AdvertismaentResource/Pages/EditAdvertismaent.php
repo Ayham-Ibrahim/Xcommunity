@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\BookResource\Pages;
+namespace App\Filament\Resources\AdvertismaentResource\Pages;
 
-use App\Filament\Resources\BookResource;
+use App\Filament\Resources\AdvertismaentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBook extends EditRecord
+class EditAdvertismaent extends EditRecord
 {
-    protected static string $resource = BookResource::class;
+    protected static string $resource = AdvertismaentResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -18,8 +18,9 @@ class EditBook extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+
     protected function getRedirectUrl(): string {
         return $this->getResource()::getUrl('index');
     }
-
 }

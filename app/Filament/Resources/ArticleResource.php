@@ -2,16 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ArticleResource\Pages;
-use App\Filament\Resources\ArticleResource\RelationManagers;
-use App\Models\Article;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Article;
+use App\Models\Section;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ArticleGroup;
+use App\Models\ChildCategory;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use App\Filament\Resources\ArticleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ArticleResource\RelationManagers;
 
 class ArticleResource extends Resource
 {
@@ -25,26 +30,31 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('child_category_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('child_category_id')
+                    ->relationship('childCategory', 'id')
+                    ->options(ChildCategory::pluck('name','id')->all())
+                    ->required(),
                 Forms\Components\TextInput::make('section_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('article_group_id')
-                    ->required()
-                    ->numeric(),
+                    ->default(3)
+                    ->required(),
+                Forms\Components\Select::make('article_group_id')
+                    ->relationship('articleGroup', 'id')
+                    ->options(ArticleGroup::pluck('name','id')->all())
+                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->directory('images/articles')
+                    ->preserveFilenames()
+                    ->enableOpen()
                     ->required(),
                 Forms\Components\Textarea::make('body')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('time_to_read')
+                Forms\Components\TextInput::make('time_to_read')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -55,13 +65,13 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('child_category_id')
+                Tables\Columns\TextColumn::make('childCategory.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('section_id')
+                Tables\Columns\TextColumn::make('section.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('article_group_id')
+                Tables\Columns\TextColumn::make('articleGroup.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
@@ -85,6 +95,10 @@ class ArticleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make(),
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -117,5 +131,17 @@ class ArticleResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public function create($record) {
+        // Intercept creation process
+        parent::create($record);
+
+        // If creation is successful, send notification
+        $title = 'New Podcast Added';
+        $body = 'A new podcast has been added.';
+        $item_id = $record->getKey();
+        $item_type = 'article';
+        $this->sendNotification($title, $body, $item_id, $item_type);
     }
 }

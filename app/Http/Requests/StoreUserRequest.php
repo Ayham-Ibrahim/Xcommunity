@@ -26,6 +26,7 @@ class StoreUserRequest extends FormRequest
             'password'=>'required|min:8',
             'name' => 'required|string',
             'role_name' =>'string',
+            'device_token' =>'string|unique:users',
         ];
     }
 }

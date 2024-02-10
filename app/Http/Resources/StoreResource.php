@@ -17,7 +17,7 @@ class StoreResource extends JsonResource
         $category = $this->category;
         return [
             'id'              => $this->id,
-            'category'        => $category->nmae,
+            'category'        => $category->name,
             'title'           => $this->title,
             'description'     => $this->description,
             'file'            => asset('files/' . $this->file),

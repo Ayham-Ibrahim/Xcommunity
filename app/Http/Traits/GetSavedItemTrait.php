@@ -58,4 +58,31 @@ trait GetSavedItemTrait
                 return response()->json(['message' => 'Not Found!'], 404);
         }
     }
+
+    public function getNotifiedItem($item_id,$item_type){
+        switch ($item_type) {
+            case 'store':
+                $item = Store::findOrFail($item_id);
+                $userItem = new StoreResource($item);
+                return $userItem;
+            case 'article':
+                $item =  Article::findOrFail($item_id);
+                $userItem = new ArticleResource($item);
+                return $userItem;
+            case 'podcast':
+                $item = Podcast::findOrFail($item_id);
+                $userItem = new PodcastResource($item);
+                return $userItem;
+            case 'job':
+                $item = Job::findOrFail($item_id);
+                $userItem = new JobResource($item);
+                return $userItem;
+            case 'advertismaent':
+                $item = Advertismaent::findOrFail($item_id);
+                $userItem = new AdvertismaentResource($item);
+                return $userItem;
+            default:
+                return response()->json(['message' => 'Not Found!'], 404);
+        }
+    }
 }

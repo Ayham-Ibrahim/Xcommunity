@@ -2,16 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\PodcastList;
+use App\Models\ChildCategory;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PodcastListResource\Pages;
 use App\Filament\Resources\PodcastListResource\RelationManagers;
-use App\Models\PodcastList;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PodcastListResource extends Resource
 {
@@ -25,18 +33,22 @@ class PodcastListResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('child_category_id')
-                    ->relationship('childCategory', 'id')
-                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('child_category_id')
+                        ->relationship('childCategory', 'id')
+                        ->options(ChildCategory::pluck('name','id')->all())
+                        ->required(),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->directory('images/podcastList')
+                    ->preserveFilenames()
+                    ->enableOpen()
                     ->required(),
             ]);
     }

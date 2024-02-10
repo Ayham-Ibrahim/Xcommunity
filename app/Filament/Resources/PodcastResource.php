@@ -2,19 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PodcastResource\Pages;
-use App\Filament\Resources\PodcastResource\RelationManagers;
-use App\Models\Podcast;
+use App\Http\Traits\NotificationTrait;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Podcast;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ChildCategory;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PodcastResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PodcastResource\RelationManagers;
 
 class PodcastResource extends Resource
 {
+    use NotificationTrait;
+
     protected static ?string $model = Podcast::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-microphone';
@@ -25,27 +29,31 @@ class PodcastResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\Select::make('podcast_list_id')
                     ->relationship('podcastList', 'title')
                     ->required(),
                 Forms\Components\Select::make('child_category_id')
                     ->relationship('childCategory', 'id')
+                    ->options(ChildCategory::pluck('name','id')->all())
                     ->required(),
                 Forms\Components\TextInput::make('section_id')
                     ->required()
+                    ->default(2)
                     ->numeric(),
-                Forms\Components\TextInput::make('title')
+                Forms\Components\FileUpload::make('voice')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('voice')
-                    ->required()
-                    ->maxLength(255),
+                    ->directory('files/podcast')
+                    ->preserveFilenames(),
                 Forms\Components\TextInput::make('duration')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('text_file')
+                Forms\Components\FileUpload::make('text_file')
                     ->required()
-                    ->maxLength(255),
+                    ->directory('files/podcast/podcast-text')
+                    ->preserveFilenames()
             ]);
     }
 
@@ -56,10 +64,10 @@ class PodcastResource extends Resource
                 Tables\Columns\TextColumn::make('podcastList.title')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('childCategory.id')
+                Tables\Columns\TextColumn::make('childCategory.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('section_id')
+                Tables\Columns\TextColumn::make('section.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
@@ -121,4 +129,19 @@ class PodcastResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+
+    public function create($record) {
+        // Intercept creation process
+        parent::create($record);
+
+        // If creation is successful, send notification
+        $title = 'New Podcast Added';
+        $body = 'A new podcast has been added.';
+        $item_id = $record->getKey();
+        $item_type = 'podcast';
+        $this->sendNotification($title, $body, $item_id, $item_type);
+    }
+
+
 }
