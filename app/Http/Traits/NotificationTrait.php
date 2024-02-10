@@ -59,9 +59,4 @@ trait NotificationTrait{
         // // FCM response
         // return $result;
     }
-
-
-
-
-
 }

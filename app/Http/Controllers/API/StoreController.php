@@ -145,7 +145,8 @@ class StoreController extends Controller
     {
         if (!empty($store)) {
             $user = Auth::user();
-            return $store->saveToArvhive($user);
+            $store->saveToArchive($user);
+            return response()->json(['message' => $store->type .' Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\EmailRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\VerificationCodeRequest;
 use App\Models\User;
@@ -15,31 +16,37 @@ use Illuminate\Support\Facades\Mail;
 
 class ResetPasswordController extends Controller
 {
-    public function sendRestEmail()
+    public function sendRestEmail(EmailRequest $request)
     {
-        $user = Auth::user();
-        $code = sprintf("%04d", mt_rand(1, 999999));
+        $user = User::where('email', $request->email)->first();
 
-        // prepare message
-        $data['code'] = $code;
-        $data['email'] = $user->email;
-        $data['title'] = "Reset Password";
-        $data['body']  = "Welcom To X-community";
+        if (!empty($user)) {
+            $code = sprintf("%04d", mt_rand(1, 999999));
 
-        // send mail to user
-        Mail::send('email_interface', ['data' => $data], function ($message) use ($data) {
-            $message->to($data['email'])->subject($data['title']);
-        });
+            // prepare message
+            $data['code'] = $code;
+            $data['email'] = $user->email;
+            $data['title'] = "Reset Password";
+            $data['body']  = "Welcom To X-community";
 
-        //save the code for user to compare
-        $code = VerificationCode::creat([
-            'user_id' => $user->id,
-            'code'    => $code
-        ]);
+            // send mail to user
+            Mail::send('email_interface', ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'])->subject($data['title']);
+            });
 
+            //save the code for user to compare
+            $code = VerificationCode::creat([
+                'user_id' => $user->id,
+                'code'    => $code
+            ]);
+
+            return response()->json([
+                'message'  =>  'Mail send successfuly'
+            ], 200);
+        }
         return response()->json([
-            'message'  =>  'Mail send successfuly'
-        ], 200);
+            'message'  =>  'User Not Found'
+        ], 404);
     }
 
     public function checkTheCode(VerificationCodeRequest $request)
@@ -83,8 +90,10 @@ class ResetPasswordController extends Controller
 
     public function changePassword(ChangePasswordRequest $request)
     {
-        $user = $request->user();
-        if (!Hash::check($request->current_password, $user->password)) {
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
+
+        if ( !( Hash::check($request->current_password, $user->password) ) ) {
 
             return response()->json([
                 'message'  =>  'Current password is incorrect'

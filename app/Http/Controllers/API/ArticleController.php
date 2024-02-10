@@ -144,7 +144,8 @@ class ArticleController extends Controller
     {
         if (!empty($article)) {
             $user = Auth::user();
-            return $article->saveToArvhive($user);
+            $article->saveToArchive($user);
+            return response()->json(['message' => 'Article Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
     }

@@ -108,7 +108,8 @@ class AdvertismaentController extends Controller
     {
         if (!empty($Advertismaent)) {
             $user = Auth::user();
-            return $Advertismaent->saveToArvhive($user);
+            $Advertismaent->saveToArchive($user);
+            return response()->json(['message' => 'Advertismaent Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
     }

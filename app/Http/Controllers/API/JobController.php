@@ -8,6 +8,7 @@ use App\Http\Requests\JobRequest;
 use App\Http\Resources\JobResource;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\NotificationTrait;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -112,7 +113,8 @@ class JobController extends Controller
     {
         if (!empty($job)) {
             $user = Auth::user();
-            return $job->saveToArvhive($user);
+            $job->saveToArchive($user);
+            return response()->json(['message' => 'Job Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
     }
