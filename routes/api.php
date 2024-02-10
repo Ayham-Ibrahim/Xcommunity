@@ -42,7 +42,7 @@ Route::post('/login', [AuthController::class, 'login']);
 // Route::get('/send-mail-verification/{email}', [AuthController::class, 'sendVerifyEmail']);
 Route::get('/verify-email/{code}', [AuthController::class, 'emailVerification']);
 
-Route::get('/sendRestEmail', [ResetPasswordController::class, 'sendRestEmail']);
+Route::post('/sendRestEmail', [ResetPasswordController::class, 'sendRestEmail']);
 Route::post('/checkTheCode', [ResetPasswordController::class, 'checkTheCode']);
 Route::post('/reset', [ResetPasswordController::class, 'reset']);
 
