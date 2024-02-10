@@ -109,7 +109,7 @@ class PodcastController extends Controller
 
 
 
-    public function toggleLike(User $user, Podcast $podcast)
+    public function toggleLike(Podcast $podcast)
     {
         if($podcast){
             $user = Auth::user();
@@ -128,5 +128,28 @@ class PodcastController extends Controller
             return response()->json(['message' => 'Podcast Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
+    }
+
+    public function saveToList(UserList $userList,Podcast $podcast)
+    {
+        if ($podcast) {
+            if ($userList) {
+                $user = Auth::user();
+                return $podcast->saveToList($user, $userList);
+            }
+            return $this->customeResponse(null, "userlist  not found", 404);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
+
+    public function interstePodcast()
+    {
+        $user_id = Auth::user()->id;
+        $user_interest_ids  = UserInterest::where('user_id', $user_id)->pluck('category_id')->toArray();
+        $child_category_ids = ChildCategory::where('category_id', $user_interest_ids)->pluck('id')->toArray();
+        $interest_podcasts = Podcast::where('child_category_id', $child_category_ids)->get();
+        $data = PodcastResource::collection($interest_podcasts);
+
+        return $this->customeResponse($data, 'Done!', 200);
     }
 }

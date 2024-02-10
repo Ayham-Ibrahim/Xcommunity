@@ -23,6 +23,7 @@ class StoreResource extends JsonResource
             'file'            => asset('files/' . $this->file),
             'image'           => asset('images/' . $this->image),
             'visitors_count'  => $this->visitorCount(),
+            'downloads_count' => $this->downloadsCount(),
             'rating'          => $this->averageRating(),
         ];
 
