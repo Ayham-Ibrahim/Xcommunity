@@ -66,8 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/podcast/{podcast}',[PodcastController::class,'show']);
     Route::put('/update-podcast/{podcast}',[PodcastController::class,'update']);
     Route::delete('/delete-podcast/{podcast}',[PodcastController::class,'delete']);
-    Route::get('/savetoArchive/{podcast}',[PodcastController::class,'savetoArchive']);
+    Route::post('/savetoArchive/{podcast}',[PodcastController::class,'savetoArchive']);
     Route::get('/interest_podcasts', [PodcastController::class, 'interstePodcast']);
+    Route::post('/saveToList/{userList}/{podcast}',[PodcastController::class,'saveToList']);
 
 
     #######################################################################################################
@@ -101,8 +102,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/job/{job}',[JobController::class,'show']);
     Route::put('/update-job/{job}',[JobController::class,'update']);
     Route::delete('/delete-job/{job}',[JobController::class,'delete']);
-    Route::get('/savetoArchive/{job}',[JobController::class,'savetoArchive']);
-    Route::get('/saveToList/{userList}/{job}',[JobController::class,'saveToList']);
+    Route::post('/savetoArchive/{job}',[JobController::class,'savetoArchive']);
+    Route::post('/saveToList/{userList}/{job}',[JobController::class,'saveToList']);
 
 
     #######################################################################################################
@@ -136,8 +137,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/delete_article/{article}', [ArticleController::class, 'destroy']);
     Route::get('/interest_articles', [ArticleController::class, 'intersteArticles']);
     Route::post('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
-    Route::get('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
-    Route::get('/saveToList/{userList}/{article}',[ArticleController::class,'saveToList']);
+    Route::post('/saveToList/{userList}/{article}',[ArticleController::class,'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
@@ -153,8 +153,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_advertismaent/{advertismaent}', [AdvertismaentController::class, 'update']);
     Route::delete('/delete_advertismaent/{advertismaent}', [AdvertismaentController::class, 'destroy']);
     Route::post('/savetoArchive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
-    Route::get('/savetoArchive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
-    Route::get('/saveToList/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
+    Route::post('/saveToList/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
@@ -173,8 +172,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/download_store/{store}',[StoreController::class,'download']);
     Route::post('/storeRating/{store}',[StoreController::class,'storetRating']);
     Route::post('/savetoArchive/{store}',[StoreController::class,'savetoArchive']);
-    Route::get('/savetoArchive/{store}',[StoreController::class,'savetoArchive']);
-    Route::get('/saveToList/{userList}/{store}',[StoreController::class,'saveToList']);
+    Route::post('/saveToList/{userList}/{store}',[StoreController::class,'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
