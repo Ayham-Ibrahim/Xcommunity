@@ -118,4 +118,16 @@ class JobController extends Controller
         }
         return $this->customeResponse(null, "not found", 404);
     }
+
+    public function saveToList(UserList $userList,Job $job)
+    {
+        if ($job) {
+            if ($userList) {
+                $user = Auth::user();
+                return $job->saveToList($user, $userList);
+            }
+            return $this->customeResponse(null, "userlist  not found", 404);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
 }
