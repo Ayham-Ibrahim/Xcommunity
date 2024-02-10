@@ -15,8 +15,9 @@ class UserInterestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user)
+    public function index()
     {
+        $user = Auth::user();
         $user_intersts = UserInterest::where('user_is' , $user->id)->get();
         $data = UserInterestResource::collection($user_intersts);
 

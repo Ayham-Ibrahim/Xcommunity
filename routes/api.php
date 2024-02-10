@@ -15,7 +15,6 @@ use App\Http\Controllers\API\UserInfoController;
 use App\Http\Controllers\API\UserListController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\API\Auth\AuthController;
-use App\Http\Controllers\API\SupplementController;
 use App\Http\Controllers\API\PodcastListController;
 use App\Http\Controllers\API\ArticleGroupController;
 use App\Http\Controllers\API\UserInterestController;
@@ -85,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/update-podcastList/{podcastList}',[PodcastListController::class,'update']);
     Route::delete('/delete-podcastList/{podcastList}',[PodcastListController::class,'delete']);
     Route::post('/podcastListRating/{podcastList}',[PodcastListController::class,'podcastListRating']);
+    Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
     Route::get('/interest_podcastList', [PodcastListController::class, 'interstePodcastList']);
 
 
@@ -110,7 +110,7 @@ Route::middleware('auth:sanctum')->group(function () {
     #######################################################################################################
 
     #######################################################################################################
-    ######################################## ARTICLE CONTROLLER ###########################################
+    ##################################### ARTICLE GROUP CONTROLLER ########################################
     #######################################################################################################
 
     Route::get('/article_groups', [ArticleGroupController::class, 'index']);
@@ -119,13 +119,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_article_group/{article_group}', [ArticleGroupController::class, 'update']);
     Route::delete('/delete_article_group/{article_group}', [ArticleGroupController::class, 'destroy']);
     Route::get('/interest_article_groups', [ArticleGroupController::class, 'intersteArticleGroups']);
+    Route::post('/follow_articleGroup/{articleGroup}', [ArticleGroupController::class, 'followGroup']);
 
     #######################################################################################################
     #######################################################################################################
     #######################################################################################################
 
     #######################################################################################################
-    ##################################### ARTICLE GROUP CONTROLLER ########################################
+    ######################################## ARTICLE CONTROLLER ###########################################
     #######################################################################################################
 
     Route::get('/articles', [ArticleController::class, 'index']);
@@ -134,6 +135,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_article/{article}', [ArticleController::class, 'update']);
     Route::delete('/delete_article/{article}', [ArticleController::class, 'destroy']);
     Route::get('/interest_articles', [ArticleController::class, 'intersteArticles']);
+    Route::post('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
     Route::get('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
     Route::get('/saveToList/{userList}/{article}',[ArticleController::class,'saveToList']);
 
@@ -150,9 +152,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create_advertismaent', [AdvertismaentController::class, 'store']);
     Route::post('/update_advertismaent/{advertismaent}', [AdvertismaentController::class, 'update']);
     Route::delete('/delete_advertismaent/{advertismaent}', [AdvertismaentController::class, 'destroy']);
+    Route::post('/savetoArchive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
     Route::get('/savetoArchive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
     Route::get('/saveToList/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
-
 
     #######################################################################################################
     #######################################################################################################
@@ -170,6 +172,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/interest_stores/{type}', [StoreController::class, 'interstestores']);
     Route::get('/download_store/{store}',[StoreController::class,'download']);
     Route::post('/storeRating/{store}',[StoreController::class,'storetRating']);
+    Route::post('/savetoArchive/{store}',[StoreController::class,'savetoArchive']);
     Route::get('/savetoArchive/{store}',[StoreController::class,'savetoArchive']);
     Route::get('/saveToList/{userList}/{store}',[StoreController::class,'saveToList']);
 
@@ -181,7 +184,7 @@ Route::middleware('auth:sanctum')->group(function () {
     ##################################### USER INTEREST CONTROLLER ########################################
     #######################################################################################################
 
-    Route::get('/user_interests/{user}', [UserInterestController::class, 'index']);
+    Route::get('/user_interests', [UserInterestController::class, 'index']);
     Route::post('/createOrUpdate_interests', [UserInterestController::class, 'createOrUpdate']);
 
     #######################################################################################################
@@ -244,8 +247,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
 
     // follow
-    Route::post('/articleGroup/{articleGroup}/follow-toggle', [ArticleGroupController::class, 'followGroup']);
-    Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
+
 
     // Show Archive
     Route::get('/showUserArchiveItem' , [SaveController::class, 'showUserArchiveItem']);
