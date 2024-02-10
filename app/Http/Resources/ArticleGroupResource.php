@@ -25,7 +25,8 @@ class ArticleGroupResource extends JsonResource
             'image'            => asset('images/' . $this->image),
             'category'         => $category->name,
             'articles_count'   => $articles->count(),
-            'visitors_count'   => $this->visitorCount()
+            'visitors_count'   => $this->visitorCount(),
+            'followers_count'   => $this->followersCount(),
         ];
     }
 }

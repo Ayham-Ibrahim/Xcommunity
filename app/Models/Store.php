@@ -51,7 +51,7 @@ class Store extends Model
 
     public function downloads()
     {
-        return $this->morphMany(Download::class, 'downlaodable');
+        return $this->morphMany(Download::class, 'downloadable');
     }
 
     public function userLestArchives()

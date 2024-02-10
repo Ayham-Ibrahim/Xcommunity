@@ -2,9 +2,16 @@
 namespace App\Http\Traits;
 
 use App\Models\User;
+use App\Models\Follow;
 
 trait FollowTrait
 {
+    public function followers()
+    {
+        return $this->morphMany(Follow::class, 'followable');
+    }
+
+
     public function followToggle (User $user){
         if ($this->hasFollowedByUser($user)){
             $this->unFollow($user);

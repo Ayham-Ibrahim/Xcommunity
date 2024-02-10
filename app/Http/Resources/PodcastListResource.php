@@ -23,7 +23,7 @@ class PodcastListResource extends JsonResource
             'image'            => asset('photos/'.$this->image),
             'visitors_count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
-            'followers_count'  => $this->followersCount('like'),
+            'followers_count'   => $this->followersCount(),
             'child_category'   => $child_category->name,
         ];
     }
