@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaveController;
 use App\Http\Controllers\API\JobController;
-use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\StoreController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\ArticleController;
@@ -58,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/changePassword', [ResetPasswordController::class, 'changePassword']);
 
     #######################################################################################################
-    ########################################PODCAST CONTROLLER#############################################
+    ######################################## PODCAST CONTROLLER ###########################################
     #######################################################################################################
 
     Route::get('/podcasts',[PodcastController::class,'index']);
@@ -69,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/savetoArchive/{podcast}',[PodcastController::class,'savetoArchive']);
     Route::get('/interest_podcasts', [PodcastController::class, 'interstePodcast']);
     Route::post('/saveToList/{userList}/{podcast}',[PodcastController::class,'saveToList']);
+    Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
 
 
     #######################################################################################################
@@ -138,6 +138,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/interest_articles', [ArticleController::class, 'intersteArticles']);
     Route::post('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
     Route::post('/saveToList/{userList}/{article}',[ArticleController::class,'saveToList']);
+    Route::post('/toggle_like_article/{article}', [ArticleController::class, 'toggleLike']);
+
 
     #######################################################################################################
     #######################################################################################################
@@ -238,13 +240,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ACTIVITY
     Route::get('/yourActivity', [ActivityController::class, 'yourActivity']);
-    Route::delete('/destroyActivity', [ActivityController::class, 'destroyActivity']);
-
-    // likes
-    Route::post('/article/{article}/toggle-like', [ArticleController::class, 'toggleLike']);
-    Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
-
-    // follow
+    Route::delete('/destroyActivity/{activity}', [ActivityController::class, 'destroyActivity']);
 
 
     // Show Archive

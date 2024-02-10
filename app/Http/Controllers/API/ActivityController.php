@@ -25,8 +25,15 @@ class ActivityController extends Controller
     public function destroyActivity(Activity $activity)
     {
         if(!empty($activity)){
+
+        $user_id = Auth::user()->id;
+        $user_activity_id = $activity->causer_id;
+
+        if ($user_id == $user_activity_id) {
             $activity->delete();
             return $this->customeResponse(null, "Activity deleted successfully", 200);
+        }
+            return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
         }
         return $this->customeResponse(null, "not found", 404);
     }
