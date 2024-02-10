@@ -81,6 +81,8 @@ class PodcastListResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                // ForceDeleteAction::make(),
+                // RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

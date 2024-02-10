@@ -34,6 +34,7 @@ class ArticleGroupResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->disk('public')
                     ->directory('images/article_groups')
                     ->preserveFilenames()
                     ->enableOpen()
@@ -73,6 +74,8 @@ class ArticleGroupResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
