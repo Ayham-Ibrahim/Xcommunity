@@ -141,6 +141,18 @@ class StoreController extends Controller
         return $this->customeResponse(null,'not found',404);
     }
 
+    public function saveToList(UserList $userList, Store $store)
+    {
+        if ($store) {
+            if ($userList) {
+                $user = Auth::user();
+                return $store->saveToList($user, $userList);
+            }
+            return $this->customeResponse(null, "userlist  not found", 404);
+        }
+        return $this->customeResponse(null, "not found", 404);
+    }
+
     public function savetoArchive(Store $store)
     {
         if (!empty($store)) {

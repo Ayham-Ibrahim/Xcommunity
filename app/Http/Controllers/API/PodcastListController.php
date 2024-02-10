@@ -121,4 +121,15 @@ class PodcastListController extends Controller
         return $this->customeResponse(null,'podcastList not found',404);
 
     }
+
+    public function interstePodcastList()
+    {
+        $user_id = Auth::user()->id;
+        $user_interest_ids  = UserInterest::where('user_id', $user_id)->pluck('category_id')->toArray();
+        $child_category_ids = ChildCategory::where('category_id', $user_interest_ids)->pluck('id')->toArray();
+        $interest_podcastList = PodcastList::where('child_category_id', $child_category_ids)->get();
+        $data = PodcastListResource::collection($interest_podcastList);
+
+        return $this->customeResponse($data, 'Done!', 200);
+    }
 }

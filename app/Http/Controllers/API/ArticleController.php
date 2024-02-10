@@ -128,7 +128,7 @@ class ArticleController extends Controller
         return $this->customeResponse(null, "not found", 404);
     }
 
-    public function saveToList(User $user, UserList $userList, Article $article)
+    public function saveToList(UserList $userList, Article $article)
     {
         if ($article) {
             if ($userList) {
