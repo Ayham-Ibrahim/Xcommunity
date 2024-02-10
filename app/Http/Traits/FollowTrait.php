@@ -4,18 +4,17 @@ namespace App\Http\Traits;
 
 use App\Models\Follow;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait FollowTrait
 {
-    public function followers(): MorphMany
+    public function followers()
     {
         return $this->morphMany(Follow::class, 'followable');
     }
 
-    public function followToggle(User $user)
-    {
-        if ($this->hasFollowedByUser($user)) {
+
+    public function followToggle (User $user){
+        if ($this->hasFollowedByUser($user)){
             $this->unFollow($user);
             return $message = 'you are Unfollowing ' . get_class($this);
         } else {

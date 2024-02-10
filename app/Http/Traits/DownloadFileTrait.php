@@ -3,16 +3,21 @@
 namespace App\Http\Traits;
 
 use App\Models\User;
+use App\Models\Download;
 
 trait DownloadFileTrait {
 
+    public function downloads()
+    {
+        return $this->morphMany(Download::class, 'downloadable');
+    }
 
     public function downloadFile(User $user,$file,$folder)
     {
         if($this->hasDownloadByUser($user)){
             $user->downloads()->create([
-                'followable_id'     => $this->id,
-                'followable_type'   => get_class($this),
+                'downloadable_id'     => $this->id,
+                'downloadable_type'   => get_class($this),
             ]);
             $path = storage_path(asset("files/{$folder}/{$file}"));
             if (file_exists($path)) {

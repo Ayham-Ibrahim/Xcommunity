@@ -28,8 +28,8 @@ trait LikeableTrait
     public function isLikedByUser(User $user): bool
     {
         return $this->likes()->where('user_id', $user->id)
-                    ->where('likable_id',$this->id)
-                    ->where('likable_type',get_class($this))
+                    ->where('likeable_id',$this->id)
+                    ->where('likeable_type',get_class($this))
                     ->exists();
     }
 
@@ -37,14 +37,14 @@ trait LikeableTrait
     {
         $existingLike = $this->likes()->where([
             'user_id'      => $user->id,
-            'likable_id'   => $this->id,
-            'likable_type' => get_class($this),
+            'likeable_id'   => $this->id,
+            'likeable_type' => get_class($this),
         ])->first();
 
         if (!$existingLike) {
             $user->likes()->create([
-                'likable_id' => $this->id,
-                'likable_type' => get_class($this),
+                'likeable_id' => $this->id,
+                'likeable_type' => get_class($this),
             ]);
         }
 
@@ -54,8 +54,8 @@ trait LikeableTrait
     {
         $this->likes()->where([
             'user_id' => $user->id,
-            'likeable_id' => $this->id,
-            'likeable_type' => get_class($this),
+            'likable_id' => $this->id,
+            'likable_type' => get_class($this),
         ])->delete();
     }
 
