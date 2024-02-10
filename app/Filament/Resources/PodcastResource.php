@@ -131,17 +131,16 @@ class PodcastResource extends Resource
     }
 
 
-    public function create($record): void
-    {
+    public function create($record) {
         // Intercept creation process
         parent::create($record);
 
         // If creation is successful, send notification
         $title = 'New Podcast Added';
         $body = 'A new podcast has been added.';
-        $itemId = $record->getKey();
-        $itemType = 'Podcast'; // Assuming the item type is 'Podcast'
-        $this->sendNotification($title, $body, $itemId, $itemType);
+        $item_id = $record->getKey();
+        $item_type = 'podcast';
+        $this->sendNotification($title, $body, $item_id, $item_type);
     }
 
 

@@ -47,7 +47,6 @@ class JobController extends Controller
             "section_id"      => 5,
         ]);
 
-        // $notification = $this->sendNotification('new book','X-community managmet add new job',$job->id);
 
 
         return $this->customeResponse(new JobResource($job),'job created successfully',200);

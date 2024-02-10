@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image');
             $table->text('description');
             $table->string('file');
-            $table->enum('type', ['Book', 'Supplement']);
+            $table->string('type');
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();;
             $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
             $table->softDeletes();

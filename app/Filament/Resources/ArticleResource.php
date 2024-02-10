@@ -12,6 +12,8 @@ use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use App\Filament\Resources\ArticleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ArticleResource\RelationManagers;
@@ -93,6 +95,10 @@ class ArticleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make(),
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -125,5 +131,17 @@ class ArticleResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public function create($record) {
+        // Intercept creation process
+        parent::create($record);
+
+        // If creation is successful, send notification
+        $title = 'New Podcast Added';
+        $body = 'A new podcast has been added.';
+        $item_id = $record->getKey();
+        $item_type = 'article';
+        $this->sendNotification($title, $body, $item_id, $item_type);
     }
 }

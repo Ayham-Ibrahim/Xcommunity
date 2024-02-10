@@ -14,6 +14,8 @@ class JobResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $section = Section::find($this->section_id);
+
         return [
             "id"            =>$this->id,
             "title"         => $this->title,
@@ -26,7 +28,7 @@ class JobResource extends JsonResource
             'nationality'    =>$this->nationality,
             'gender'         =>$this->gender,
             'image'          =>asset('photos/' . $this->image),
-            // "section_id"   => $this->
+            'section'        => $section->name,
         ];
     }
 }

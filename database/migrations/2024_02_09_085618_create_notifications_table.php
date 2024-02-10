@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('body');
-            $table->morphs('notifable');
+            $table->integer('item_id');
+            $table->string('item_type');
             $table->timestamps();
         });
     }

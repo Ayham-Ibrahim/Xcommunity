@@ -14,6 +14,8 @@ class PodcastListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $child_category = $this->childCategory;
+
         return [
             'id'               =>$this->id,
             'title'            =>$this->title,
@@ -21,9 +23,8 @@ class PodcastListResource extends JsonResource
             'image'            => asset('photos/'.$this->image),
             'visitors_count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
-            'followers_count'   => $this->followersCount('like'),
-
-            // 'child_category_id' =>
+            'followers_count'  => $this->followersCount('like'),
+            'child_category'   => $child_category->name,
         ];
     }
 }
