@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Resources\ArticleResource;
+use App\Http\Traits\UserListArchiveTrait;
 
 class ArticleController extends Controller
 {
-    use ApiResponseTrait, UploadFileTrait;
+    use ApiResponseTrait, UploadFileTrait, UserListArchiveTrait;
     /**
      * Display a listing of the resource.
      */
@@ -122,7 +123,6 @@ class ArticleController extends Controller
     {
         if ($article) {
             $user = Auth::user();
-            $activity = activity()->causedBy($user)->log('You liked the article about ' . $article->title);
             return $article->toggleLike($user);
         }
         return $this->customeResponse(null, "not found", 404);

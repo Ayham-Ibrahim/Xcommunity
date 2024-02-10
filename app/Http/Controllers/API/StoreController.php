@@ -7,15 +7,17 @@ use App\Http\Requests\RatingRequest;
 use App\Http\Requests\StoreRequest;
 use App\Http\Resources\StoreResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Http\Traits\DownloadFileTrait;
 use App\Http\Traits\UploadFileTrait;
 use App\Models\Store;
 use App\Models\UserInterest;
+use App\Models\UserList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
-    use ApiResponseTrait, UploadFileTrait;
+    use ApiResponseTrait, UploadFileTrait ,DownloadFileTrait;
     /**
      * Display a listing of the resource.
      */
@@ -46,7 +48,7 @@ class StoreController extends Controller
 
         $data = new StoreResource($store);
 
-        return $this->customeRespone($data, $store->type ." Created Successfuly", 201);
+        return $this->customeResponse($data, $store->type ." Created Successfuly", 201);
     }
 
     /**
@@ -58,9 +60,9 @@ class StoreController extends Controller
             $user = Auth::user();
             $store->visit($user);
             $data = new StoreResource($store);
-            return $this->customeRespone($data, "Done!", 200);
+            return $this->customeResponse($data, "Done!", 200);
         }
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     /**
@@ -90,7 +92,7 @@ class StoreController extends Controller
         $data = new StoreResource($store);
 
 
-        return $this->customeRespone($data, $store->type ." Updated Successfuly", 200);
+        return $this->customeResponse($data, $store->type ." Updated Successfuly", 200);
     }
 
     /**
@@ -100,10 +102,10 @@ class StoreController extends Controller
     {
         if (!empty($store)) {
             $store->delete();
-            return $this->customeRespone(null , $store->type ." deleted Successfully" , 200);
+            return $this->customeResponse(null , $store->type ." deleted Successfully" , 200);
         }
 
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     public function intersteStores($type)

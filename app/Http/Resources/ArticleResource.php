@@ -27,7 +27,7 @@ class ArticleResource extends JsonResource
             'image'                => asset('images/' . $this->image),
             'timeSincePublication' => Carbon::parse($this->created_at)->diffForHumans(),
             'visitors_count'       => $this->visitorCount(),
-            'likes_count'       => $this->likesCount(),
+            'likes_count'          => $this->likesCount(),
         ];
     }
 }

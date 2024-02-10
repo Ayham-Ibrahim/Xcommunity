@@ -17,13 +17,13 @@ class PodcastListResource extends JsonResource
         $child_category = $this->childCategory;
 
         return [
-            'id'               =>$this->id,
-            'title'            =>$this->title,
-            'description'      =>$this->description,
+            'id'               => $this->id,
+            'title'            => $this->title,
+            'description'      => $this->description,
             'image'            => asset('photos/'.$this->image),
             'visitors_count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
-            'followers_count'   => $this->followersCount(),
+            'followers_count'  => $this->followersCount(),
             'child_category'   => $child_category->name,
         ];
     }

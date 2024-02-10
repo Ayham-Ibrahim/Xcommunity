@@ -19,6 +19,7 @@ trait LikeableTrait
             $message = get_class($this) . ' like removed successfully';
         } else {
             $this->addLike($user);
+            activity()->causedBy($user)->log('You liked the '. $this->section .' about ' . $this->title);
             $message = get_class($this) . ' liked successfully';
         }
 
@@ -54,8 +55,8 @@ trait LikeableTrait
     {
         $this->likes()->where([
             'user_id' => $user->id,
-            'likable_id' => $this->id,
-            'likable_type' => get_class($this),
+            'likeable_id' => $this->id,
+            'likeable_type' => get_class($this),
         ])->delete();
     }
 

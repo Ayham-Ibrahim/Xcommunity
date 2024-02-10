@@ -40,10 +40,11 @@ trait UserListArchiveTrait {
             'saveable_id'   => $this->id,
             'saveable_type' => get_class($this),
             'user_list_id' => $userList->id,
-        ])->first();
+            ])->first();
 
-        if (!$existing) {
-            $user->userLestArchives()->create([
+            if (!$existing) {
+                $this->userLestArchives()->create([
+                'user_id'      => $user->id,
                 'saveable_id' => $this->id,
                 'saveable_type' => get_class($this),
                 'user_list_id' => $userList->id,

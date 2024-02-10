@@ -8,6 +8,7 @@ use App\Http\Requests\JobRequest;
 use App\Http\Resources\JobResource;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\NotificationTrait;
+use App\Models\UserList;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller

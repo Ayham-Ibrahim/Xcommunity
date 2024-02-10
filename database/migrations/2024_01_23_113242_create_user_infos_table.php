@@ -25,11 +25,11 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'no profrence'])->nullable();
             $table->date('birth_date')->nullable();
             $table->enum('birth_date_priv', ['public', 'me'])->nullable();
-            $table->date('job')->nullable();
+            $table->string('job')->nullable();
             $table->enum('job_priv', ['public', 'me'])->nullable();
-            $table->date('education')->nullable();
+            $table->string('education')->nullable();
             $table->enum('education_priv', ['public', 'me'])->nullable();
-            $table->date('location')->nullable();
+            $table->string('location')->nullable();
             $table->enum('location_priv', ['public', 'me'])->nullable();
             $table->softDeletes();
             $table->timestamps();

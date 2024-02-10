@@ -10,6 +10,7 @@ use App\Http\Traits\UploadFileTrait;
 use App\Models\Advertismaent;
 use App\Models\Article;
 use App\Models\UserInterest;
+use App\Models\UserList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,7 +48,7 @@ class AdvertismaentController extends Controller
 
         $data = new AdvertismaentResource($advertismaent);
 
-        return $this->customeRespone($data, "Advertismaent Created Successfuly", 201);
+        return $this->customeResponse($data, "Advertismaent Created Successfuly", 201);
     }
 
     /**
@@ -57,9 +58,9 @@ class AdvertismaentController extends Controller
     {
         if(!empty($advertismaent)){
             $data = new AdvertismaentResource($advertismaent);
-            return $this->customeRespone($data, "Done!", 200);
+            return $this->customeResponse($data, "Done!", 200);
         }
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     /**
@@ -88,7 +89,7 @@ class AdvertismaentController extends Controller
         $data = new AdvertismaentResource($advertismaent);
 
 
-        return $this->customeRespone($data, "Advertismaent Updated Successfuly", 200);
+        return $this->customeResponse($data, "Advertismaent Updated Successfuly", 200);
     }
 
     /**
@@ -98,10 +99,10 @@ class AdvertismaentController extends Controller
     {
         if (!empty($advertismaent)) {
             $advertismaent->delete();
-            return $this->customeRespone(null , "Advertismaent deleted successfully" , 200);
+            return $this->customeResponse(null , "Advertismaent deleted successfully" , 200);
         }
 
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     public function savetoArchive(Advertismaent $Advertismaent)
