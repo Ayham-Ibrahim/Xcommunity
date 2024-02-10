@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Http\Traits\NotificationTrait;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Podcast;
@@ -10,7 +9,10 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\ChildCategory;
 use Filament\Resources\Resource;
+use App\Http\Traits\NotificationTrait;
+use Filament\Pages\Actions\RestoreAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\ForceDeleteAction;
 use App\Filament\Resources\PodcastResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PodcastResource\RelationManagers;
@@ -96,6 +98,8 @@ class PodcastResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                // ForceDeleteAction::make(),
+                // RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

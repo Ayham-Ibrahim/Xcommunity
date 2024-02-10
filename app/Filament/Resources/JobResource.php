@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdvertismaentResource\Pages;
-use App\Filament\Resources\AdvertismaentResource\RelationManagers;
-use App\Models\Advertismaent;
+use App\Filament\Resources\JobResource\Pages;
+use App\Filament\Resources\JobResource\RelationManagers;
+use App\Models\Job;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,53 +13,57 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AdvertismaentResource extends Resource
+class JobResource extends Resource
 {
-    protected static ?string $model = Advertismaent::class;
+    protected static ?string $model = Job::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-megaphone';
-
-    protected static ?string $navigationGroup = 'Sections';
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('section_id')
+                    ->required()
+                    ->default(5)
+                    ->numeric(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('section_id')
-                    ->default(3)
-                    ->required(),
                 Forms\Components\Textarea::make('discription')
-                    // ->maxLength(65535),
-                    ->required(),
-                Forms\Components\Textarea::make('trainning_topics')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('details')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('tarinning_outcomes')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('reservation')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('cost')
-                    ->required()
-                    ->numeric()
-                    ->prefix('S.p'),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->directory('images/advertisment')
+                    ->directory('images/jobs')
                     ->preserveFilenames()
                     ->enableOpen()
                     ->required(),
+                Forms\Components\Textarea::make('tasks')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('skills')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('age')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('job_type')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('gender')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nationality')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -73,10 +77,15 @@ class AdvertismaentResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('cost')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('reservation')
+                Tables\Columns\TextColumn::make('age')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('job_type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('gender')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nationality')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
@@ -96,6 +105,8 @@ class AdvertismaentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ForceDeleteAction::make(),
+                RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -116,9 +127,9 @@ class AdvertismaentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAdvertismaents::route('/'),
-            'create' => Pages\CreateAdvertismaent::route('/create'),
-            'edit' => Pages\EditAdvertismaent::route('/{record}/edit'),
+            'index' => Pages\ListJobs::route('/'),
+            'create' => Pages\CreateJob::route('/create'),
+            'edit' => Pages\EditJob::route('/{record}/edit'),
         ];
     }
 

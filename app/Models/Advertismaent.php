@@ -15,12 +15,12 @@ class Advertismaent extends Model
     protected $fillable = [
         'section_id',
         'title',
-        'discripton',
+        'discription',
         'image',
         'trainning_topics',
         'details',
         'cost',
-        'trainning_outcomes',
+        'tarinning_outcomes',
         'reservation'
     ];
 
@@ -28,11 +28,11 @@ class Advertismaent extends Model
 {
     return [
         'title'              => $this->title,
-        'discripton'         => $this->discripton,
+        'discription'         => $this->discription,
         'trainning_topics'   => $this->trainning_topics,
         'details'            => $this->details,
         'cost'               => $this->cost,
-        'trainning_outcomes' => $this->trainning_outcomes,
+        'tarinning_outcomes' => $this->tarinning_outcomes,
         'reservation'        => $this->reservation,
     ];
 }
