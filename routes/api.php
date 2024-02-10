@@ -67,7 +67,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/delete-podcast/{podcast}',[PodcastController::class,'delete']);
     Route::post('/savetoArchive/{podcast}',[PodcastController::class,'savetoArchive']);
     Route::get('/interest_podcasts', [PodcastController::class, 'interstePodcast']);
-    Route::post('/saveToList/{userList}/{podcast}',[PodcastController::class,'saveToList']);
+    Route::post('/save_Podcast_To_List/{userList}/{podcast}',[PodcastController::class,'saveToList']);
+    Route::post('/save_podcast_to_Archive/{podcast}',[PodcastController::class,'savetoArchive']);
     Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
 
 
@@ -102,8 +103,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/job/{job}',[JobController::class,'show']);
     Route::put('/update-job/{job}',[JobController::class,'update']);
     Route::delete('/delete-job/{job}',[JobController::class,'delete']);
-    Route::post('/savetoArchive/{job}',[JobController::class,'savetoArchive']);
-    Route::post('/saveToList/{userList}/{job}',[JobController::class,'saveToList']);
+    Route::post('/save_job_to_Archive/{job}',[JobController::class,'savetoArchive']);
+    Route::post('/save_job_To_List/{userList}/{job}',[JobController::class,'saveToList']);
 
 
     #######################################################################################################
@@ -136,8 +137,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_article/{article}', [ArticleController::class, 'update']);
     Route::delete('/delete_article/{article}', [ArticleController::class, 'destroy']);
     Route::get('/interest_articles', [ArticleController::class, 'intersteArticles']);
-    Route::post('/savetoArchive/{article}',[ArticleController::class,'savetoArchive']);
-    Route::post('/saveToList/{userList}/{article}',[ArticleController::class,'saveToList']);
+    Route::post('/save_article_to_Archive/{article}',[ArticleController::class,'savetoArchive']);
+    Route::post('/save_article_To_List/{userList}/{article}',[ArticleController::class,'saveToList']);
     Route::post('/toggle_like_article/{article}', [ArticleController::class, 'toggleLike']);
 
 
@@ -154,8 +155,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create_advertismaent', [AdvertismaentController::class, 'store']);
     Route::post('/update_advertismaent/{advertismaent}', [AdvertismaentController::class, 'update']);
     Route::delete('/delete_advertismaent/{advertismaent}', [AdvertismaentController::class, 'destroy']);
-    Route::post('/savetoArchive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
-    Route::post('/saveToList/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
+    Route::post('/save_advertismaent_to_Archive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
+    Route::post('/save_advertismaent_To_List/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
@@ -173,8 +174,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/interest_stores/{type}', [StoreController::class, 'interstestores']);
     Route::get('/download_store/{store}',[StoreController::class,'download']);
     Route::post('/storeRating/{store}',[StoreController::class,'storetRating']);
-    Route::post('/savetoArchive/{store}',[StoreController::class,'savetoArchive']);
-    Route::post('/saveToList/{userList}/{store}',[StoreController::class,'saveToList']);
+    Route::post('/save_store_to_Archive/{store}',[StoreController::class,'savetoArchive']);
+    Route::post('/save_store_To_List/{userList}/{store}',[StoreController::class,'saveToList']);
 
     #######################################################################################################
     #######################################################################################################

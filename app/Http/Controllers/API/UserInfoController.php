@@ -30,7 +30,7 @@ class UserInfoController extends Controller
     public function store(UserInfoRequest $request)
     {
         $user_id = Auth::user()->id;
-        $image_path = $this->UploadPhoto($request, 'User Infos', 'photo', 'images');
+        $image_path = $this->UploadFile($request, 'User Infos', 'photo', 'images');
 
         $user_info = UserInfo::create([
             'user_id'            =>$user_id,
@@ -76,7 +76,7 @@ class UserInfoController extends Controller
     public function update(UserInfoRequest $request, UserInfo $user_info)
     {
         if (!empty($user_info->photo)) {
-            $image_path = $this->UploadPhoto($request, 'User Infos', 'photo', 'images');
+            $image_path = $this->UploadFile($request, 'User Infos', 'photo', 'images');
         } else {
             $image_path = $user_info->photo;
         }

@@ -17,7 +17,7 @@ class ActivityController extends Controller
     public function yourActivity()
     {
         $user = Auth::user();
-        $activity = Activity::where('causer', $user)->get();
+        $activity = Activity::where('causer_id', $user->id)->get();
         $data = ActivityResource::collection($activity);
         return $this->customeResponse($data, 'Done!', 200);
     }

@@ -8,7 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PodcastRequest;
 use App\Http\Resources\PodcastResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Models\ChildCategory;
 use App\Models\User;
+use App\Models\UserInterest;
+use App\Models\UserList;
 use Illuminate\Support\Facades\Auth;
 
 class PodcastController extends Controller

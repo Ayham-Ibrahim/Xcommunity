@@ -21,18 +21,24 @@ trait GetSavedItemTrait
     {
 
         switch ($savableType) {
-            case 'store':
+            case 'App\Models\Store':
                 return Store::findOrFail($savableId);
-            case 'article':
+                break;
+            case 'App\Models\Article':
                 return Article::findOrFail($savableId);
-            case 'podcast':
+                break;
+            case 'App\Models\Podcast':
                 return Podcast::findOrFail($savableId);
-            case 'job':
+                break;
+            case 'App\Models\Job':
                 return Job::findOrFail($savableId);
-            case 'advertismaent':
+                break;
+            case 'App\Models\Advertismaent':
                 return Advertismaent::findOrFail($savableId);
+                break;
             default:
                 return response()->json(['message' => 'Not Found!'], 404);
+                break;
         }
     }
 

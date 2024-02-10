@@ -10,7 +10,9 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Http\Requests\PodcastListRequest;
 use App\Http\Requests\RatingRequest;
 use App\Http\Resources\PodcastListResource;
+use App\Models\ChildCategory;
 use App\Models\PodcastList;
+use App\Models\UserInterest;
 use Illuminate\Support\Facades\Auth;
 
 class PodcastListController extends Controller

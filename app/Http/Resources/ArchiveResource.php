@@ -17,7 +17,7 @@ class ArchiveResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $item = $this->createItem($this->saveable_id, $this->saveable_type);
+        $item = $this->createItem($this->saveable_type, $this->saveable_id);
 
         $section_id = $item->section_id;
 

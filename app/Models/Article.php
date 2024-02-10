@@ -7,6 +7,7 @@ use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
 use App\Http\Traits\LikeableTrait;
 use App\Http\Traits\UserArchiveTrait;
+use App\Http\Traits\UserListArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,7 @@ use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,Searchable,UserArchiveTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,Searchable,UserArchiveTrait,UserListArchiveTrait;
 
     protected $fillable = [
         'title',

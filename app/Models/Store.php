@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\DownloadFileTrait;
 use App\Http\Traits\UserArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use App\Models\Category;
@@ -14,7 +15,7 @@ use willvincent\Rateable\Rateable;
 
 class Store extends Model
 {
-    use HasFactory,SoftDeletes,VisitorableTrait,Rateable,Searchable,UserArchiveTrait;
+    use HasFactory,SoftDeletes,VisitorableTrait,Rateable,Searchable,UserArchiveTrait,DownloadFileTrait;
 
     protected $fillable = [
         'title',

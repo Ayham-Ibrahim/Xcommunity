@@ -15,7 +15,7 @@ class UserListArchive extends Model
         'reaction'
     ];
 
-    public function saveableable()
+    public function saveable()
     {
         return $this->morphTo();
     }

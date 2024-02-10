@@ -19,11 +19,11 @@ class AdvertismaentResource extends JsonResource
         return [
             'id'                 => $this->id,
             'title'              => $this->title,
-            'discripton'         => $this->discripton,
+            'discription'         => $this->discription,
             'trainning_topics'   => $this->trainning_topics,
             'details'            => $this->details,
             'cost'               => $this->cost,
-            'trainning_outcomes' => $this->trainning_outcomes,
+            'tarinning_outcomes' => $this->trainning_outcomes,
             'reservation'        => $this->reservation,
             'section'            => $section->name,
             'image'              => asset('images/' . $this->image)
