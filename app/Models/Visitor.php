@@ -19,4 +19,6 @@ class Visitor extends Model
     {
         return $this->morphTo();
     }
+
+
 }

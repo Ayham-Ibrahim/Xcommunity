@@ -30,7 +30,7 @@ trait VisitorableTrait
 
     private function addVisitor(User $user)
     {
-        $user->visitor()->create([
+        $this->visitor()->create([
             'visitorable_id'   => $this->id,
             'visitorable_type' => get_class($this),
             'user_id'          => $user->id,

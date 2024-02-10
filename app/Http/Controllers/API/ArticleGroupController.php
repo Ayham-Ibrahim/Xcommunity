@@ -53,9 +53,9 @@ class ArticleGroupController extends Controller
             $user = Auth::user();
             $article_group->visit($user);
             $data = new ArticleGroupResource($article_group);
-            return $this->customeRespone($data, "Done!", 200);
+            return $this->customeResponse($data, "Done!", 200);
         }
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     /**
@@ -108,9 +108,9 @@ class ArticleGroupController extends Controller
 
     public function followGroup(ArticleGroup $article_group){
         if ($article_group) {
-            $user = Auth::user();$activity = activity()->causedBy($user)->log('You have followed a group of articles about '. $article_group->name);
-
-            return $article_group->followToggle($user);
+            $user = Auth::user();
+            $activity = activity()->causedBy($user)->log("You have followed a group of articles about  $article_group->name .");
+            $article_group->followToggle($user);
         }
         return $this->customeRespone(null, "ArticleGroup not found", 404);
     }
