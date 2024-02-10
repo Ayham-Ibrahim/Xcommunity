@@ -11,7 +11,7 @@ trait UserArchiveTrait {
         return $this->morphMany(Archive::class,'saveable');
     }
 
-    public function saveToArvhive(User $user) {
+    public function saveToArchive(User $user) {
         if ($this->isSavedInArchiveByUser($user)) {
             $this->removeItemFromArchive($user);
             $message = get_class($this) . '  removed successfully';

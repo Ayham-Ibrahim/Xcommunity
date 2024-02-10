@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PodcastRequest;
 use App\Http\Resources\PodcastResource;
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PodcastController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      */
@@ -122,7 +124,8 @@ class PodcastController extends Controller
     {
         if (!empty($podcast)) {
             $user = Auth::user();
-            return $podcast->saveToArvhive($user);
+            $podcast->saveToArchive($user);
+            return response()->json(['message' => 'Podcast Saved To Archive ']);
         }
         return $this->customeResponse(null, "not found", 404);
     }
