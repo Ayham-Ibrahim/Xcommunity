@@ -33,7 +33,6 @@ trait FollowTrait
 
     public function follow(User $user)
     {
-        dd($this->id);
         $existingLike = $this->followers()->where([
             'followable_id'     => $this->id,
             'followable_type'   => get_class($this),
@@ -53,7 +52,7 @@ trait FollowTrait
 
     public function unFollow(User $user)
     {
-        $user->followers()->where([
+        $this->followers()->where([
             'user_id' => $user->id,
             'followable_id'     => $this->id,
             'followable_type'   => get_class($this),

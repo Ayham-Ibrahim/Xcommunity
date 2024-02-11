@@ -6,6 +6,7 @@ use App\Models\PodcastList;
 use App\Models\UserListArchive;
 use App\Http\Traits\LikeableTrait;
 use App\Http\Traits\UserArchiveTrait;
+use App\Http\Traits\UserListArchiveTrait;
 use App\Http\Traits\VisitorableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Podcast extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,UserArchiveTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,UserArchiveTrait,UserListArchiveTrait;
 
     protected $fillable = [
         'title',

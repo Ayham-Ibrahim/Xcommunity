@@ -28,8 +28,8 @@ class AuthController extends Controller
             'device_token' => $user['device_token'],
         ]);
 
-        // $token = $user->createToken('authToken')->plainTextToken;
-        // return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
+        $token = $user->createToken('authToken')->plainTextToken;
+        return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
 
         // create code
         $code = sprintf("%06d", mt_rand(1, 999999));

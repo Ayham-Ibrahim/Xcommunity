@@ -121,7 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_article_group/{article_group}', [ArticleGroupController::class, 'update']);
     Route::delete('/delete_article_group/{article_group}', [ArticleGroupController::class, 'destroy']);
     Route::get('/interest_article_groups', [ArticleGroupController::class, 'intersteArticleGroups']);
-    Route::post('/follow_articleGroup/{articleGroup}', [ArticleGroupController::class, 'followGroup']);
+    Route::post('/follow_articleGroup/{article_group}', [ArticleGroupController::class, 'followGroup']);
 
     #######################################################################################################
     #######################################################################################################

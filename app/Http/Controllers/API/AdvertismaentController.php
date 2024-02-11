@@ -109,8 +109,7 @@ class AdvertismaentController extends Controller
     {
         if (!empty($Advertismaent)) {
             $user = Auth::user();
-            $Advertismaent->saveToArchive($user);
-            return response()->json(['message' => 'Advertismaent Saved To Archive ']);
+            return $Advertismaent->saveToArchive($user);
         }
         return $this->customeResponse(null, "not found", 404);
     }
@@ -120,7 +119,10 @@ class AdvertismaentController extends Controller
         if ($Advertismaent) {
             if ($userList) {
                 $user = Auth::user();
-                return $Advertismaent->saveToList($user, $userList);
+                if ($user->id == $userList->user_id) {
+                    return $Advertismaent->saveToList($userList);
+                }
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
