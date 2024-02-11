@@ -114,8 +114,7 @@ class JobController extends Controller
     {
         if (!empty($job)) {
             $user = Auth::user();
-            $job->saveToArchive($user);
-            return response()->json(['message' => 'Job Saved To Archive ']);
+            return $job->saveToArchive($user);
         }
         return $this->customeResponse(null, "not found", 404);
     }
@@ -125,7 +124,10 @@ class JobController extends Controller
         if ($job) {
             if ($userList) {
                 $user = Auth::user();
-                return $job->saveToList($user, $userList);
+                if ($user->id == $userList->user_id) {
+                    return $job->saveToList($userList);
+                }
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
