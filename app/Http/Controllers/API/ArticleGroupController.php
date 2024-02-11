@@ -110,8 +110,8 @@ class ArticleGroupController extends Controller
         if ($article_group) {
             $user = Auth::user();
             $activity = activity()->causedBy($user)->log("You have followed a group of articles about  $article_group->name .");
-            $article_group->followToggle($user);
+            return $article_group->followToggle($user);
         }
-        return $this->customeRespone(null, "ArticleGroup not found", 404);
+        return $this->customeResponse(null, "ArticleGroup not found", 404);
     }
 }

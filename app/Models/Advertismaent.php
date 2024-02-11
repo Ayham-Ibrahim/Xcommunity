@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Traits\UserArchiveTrait;
+use App\Http\Traits\UserListArchiveTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Laravel\Scout\Searchable;
 
 class Advertismaent extends Model
 {
-    use HasFactory, SoftDeletes, Searchable, UserArchiveTrait;
+    use HasFactory, SoftDeletes, Searchable, UserArchiveTrait, UserListArchiveTrait;
 
     protected $fillable = [
         'section_id',

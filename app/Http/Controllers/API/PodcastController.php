@@ -127,8 +127,7 @@ class PodcastController extends Controller
     {
         if (!empty($podcast)) {
             $user = Auth::user();
-            $podcast->saveToArchive($user);
-            return response()->json(['message' => 'Podcast Saved To Archive ']);
+            return $podcast->saveToArchive($user);
         }
         return $this->customeResponse(null, "not found", 404);
     }
@@ -138,7 +137,10 @@ class PodcastController extends Controller
         if ($podcast) {
             if ($userList) {
                 $user = Auth::user();
-                return $podcast->saveToList($user, $userList);
+                if ($user->id == $userList->user_id) {
+                    return $podcast->saveToList($userList);
+                }
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }

@@ -133,7 +133,10 @@ class ArticleController extends Controller
         if ($article) {
             if ($userList) {
                 $user = Auth::user();
-                return $article->saveToList($user, $userList);
+                if ($user->id == $userList->user_id) {
+                    return $article->saveToList($userList);
+                }
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
@@ -144,8 +147,7 @@ class ArticleController extends Controller
     {
         if (!empty($article)) {
             $user = Auth::user();
-            $article->saveToArchive($user);
-            return response()->json(['message' => 'Article Saved To Archive ']);
+            return $article->saveToArchive($user);
         }
         return $this->customeResponse(null, "not found", 404);
     }

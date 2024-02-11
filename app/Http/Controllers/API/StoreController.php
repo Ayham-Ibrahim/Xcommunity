@@ -148,7 +148,10 @@ class StoreController extends Controller
         if ($store) {
             if ($userList) {
                 $user = Auth::user();
-                return $store->saveToList($user, $userList);
+                if ($user->id == $userList->user_id) {
+                    return $store->saveToList($userList);
+                }
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
@@ -159,8 +162,7 @@ class StoreController extends Controller
     {
         if (!empty($store)) {
             $user = Auth::user();
-            $store->saveToArchive($user);
-            return response()->json(['message' => $store->type .' Saved To Archive ']);
+            return $store->saveToArchive($user);
         }
         return $this->customeResponse(null, "not found", 404);
     }
