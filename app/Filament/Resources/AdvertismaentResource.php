@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdvertismaentResource\Pages;
-use App\Filament\Resources\AdvertismaentResource\RelationManagers;
-use App\Models\Advertismaent;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Advertismaent;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AdvertismaentResource\Pages;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Filament\Resources\AdvertismaentResource\RelationManagers;
 
 class AdvertismaentResource extends Resource
 {
@@ -55,11 +56,16 @@ class AdvertismaentResource extends Resource
                     ->numeric()
                     ->prefix('S.p'),
                 Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('images/advertisment')
-                    ->preserveFilenames()
-                    ->enableOpen()
-                    ->required(),
+                ->image()
+                ->preserveFilenames()
+                ->directory('images/advertisments')
+                ->getUploadedFileNameForStorageUsing(
+                    fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                        ->prepend(now()->timestamp),
+                )
+                ->enableOpen()
+                ->enableDownload()
+                ->required(),
             ]);
     }
 

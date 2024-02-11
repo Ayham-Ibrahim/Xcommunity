@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ArticleGroupResource\Pages;
-use App\Filament\Resources\ArticleGroupResource\RelationManagers;
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use App\Models\ArticleGroup;
 use App\Models\ChildCategory;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\ForceDeleteAction;
-use Filament\Tables\Actions\RestoreAction;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ArticleGroupResource\Pages;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Filament\Resources\ArticleGroupResource\RelationManagers;
 
 class ArticleGroupResource extends Resource
 {
@@ -36,10 +37,14 @@ class ArticleGroupResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->disk('public')
-                    ->directory('images/article_groups')
                     ->preserveFilenames()
+                    ->directory('images/article_groups')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
                     ->enableOpen()
+                    ->enableDownload()
                     ->required(),
                 Forms\Components\Textarea::make('group_info')
                     ->required()

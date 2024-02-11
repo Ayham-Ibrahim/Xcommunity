@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_list_achives', function (Blueprint $table) {
+        Schema::create('user_list_archives', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_list_id')->constrained('user_lists')->cascadeOnDelete();
             $table->morphs('saveable');

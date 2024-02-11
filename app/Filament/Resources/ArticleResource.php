@@ -18,6 +18,7 @@ use Filament\Tables\Actions\ForceDeleteAction;
 use App\Filament\Resources\ArticleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ArticleResource\RelationManagers;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ArticleResource extends Resource
 {
@@ -49,9 +50,14 @@ class ArticleResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->directory('images/articles')
                     ->preserveFilenames()
+                    ->directory('images/articles')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
                     ->enableOpen()
+                    ->enableDownload()
                     ->required(),
                 Forms\Components\Textarea::make('body')
                     ->required()

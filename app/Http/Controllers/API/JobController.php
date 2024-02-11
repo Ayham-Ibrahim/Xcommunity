@@ -125,10 +125,11 @@ class JobController extends Controller
         if ($job) {
             if ($userList) {
                 $user = Auth::user();
-                return $job->saveToList($user, $userList);
+                $job->saveToList($user, $userList);
+                return response()->json(['message' => 'Job Saved To list ']);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
-        return $this->customeResponse(null, "not found", 404);
+        return $this->customeResponse(null, "job not found", 404);
     }
 }

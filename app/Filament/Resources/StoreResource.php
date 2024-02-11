@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StoreResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StoreResource\RelationManagers;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class StoreResource extends Resource
 {
@@ -48,14 +49,25 @@ class StoreResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->directory('images/store')
                     ->preserveFilenames()
+                    ->directory('images/store')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
                     ->enableOpen()
+                    ->enableDownload()
                     ->required(),
                 Forms\Components\FileUpload::make('file')
-                    ->required()
+                    ->preserveFilenames()
                     ->directory('files/store')
-                    ->preserveFilenames(),
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
+                    ->enableOpen()
+                    ->enableDownload()
+                    ->required(),
             ]);
     }
 
