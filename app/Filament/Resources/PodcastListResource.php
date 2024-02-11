@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PodcastListResource\Pages;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Filament\Resources\PodcastListResource\RelationManagers;
 
 class PodcastListResource extends Resource
@@ -46,9 +47,14 @@ class PodcastListResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->directory('images/podcastList')
                     ->preserveFilenames()
+                    ->directory('images/podcastList')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
                     ->enableOpen()
+                    ->enableDownload()
                     ->required(),
             ]);
     }

@@ -16,6 +16,7 @@ use Filament\Tables\Actions\ForceDeleteAction;
 use App\Filament\Resources\PodcastResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PodcastResource\RelationManagers;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PodcastResource extends Resource
 {
@@ -47,15 +48,28 @@ class PodcastResource extends Resource
                     ->numeric(),
                 Forms\Components\FileUpload::make('voice')
                     ->required()
-                    ->directory('files/podcast')
-                    ->preserveFilenames(),
+                    ->preserveFilenames()
+                    ->directory('files/podcasts')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
+                    ->enableOpen()
+                    ->enableDownload(),
                 Forms\Components\TextInput::make('duration')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('text_file')
-                    ->required()
-                    ->directory('files/podcast/podcast-text')
                     ->preserveFilenames()
+                    ->directory('files/podcast/podcast-text')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
+                    ->enableOpen()
+                    ->enableDownload()
+                    ->required(),
+
             ]);
     }
 
@@ -98,8 +112,8 @@ class PodcastResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // ForceDeleteAction::make(),
-                // RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PodcastListResource extends JsonResource
@@ -20,7 +21,7 @@ class PodcastListResource extends JsonResource
             'id'               => $this->id,
             'title'            => $this->title,
             'description'      => $this->description,
-            'image'            => asset('photos/'.$this->image),
+            'image'            => Storage::url($this->image),
             'visitors_count'   => $this->visitorCount(),
             'rating'           => $this->averageRating(),
             'followers_count'  => $this->followersCount(),

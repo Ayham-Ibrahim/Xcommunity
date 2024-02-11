@@ -31,22 +31,22 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
         return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
 
-        // create code
-        $code = sprintf("%06d", mt_rand(1, 999999));
-        // prepare message
-        $data['code'] = $code;
-        $data['email'] = $user->email;
-        $data['title'] = "Email verification";
-        $data['body']  = "Welcom To X-community";
-        // send mail to user
-        Mail::send('email_interface',['data'=>$data],function($message) use ($data){
-            $message->to($data['email'])->subject($data['title']);
-        });
+        // // create code
+        // $code = sprintf("%06d", mt_rand(1, 999999));
+        // // prepare message
+        // $data['code'] = $code;
+        // $data['email'] = $user->email;
+        // $data['title'] = "Email verification";
+        // $data['body']  = "Welcom To X-community";
+        // // send mail to user
+        // Mail::send('email_interface',['data'=>$data],function($message) use ($data){
+        //     $message->to($data['email'])->subject($data['title']);
+        // });
 
-        //save the code for user to compare
-        $user->remember_token = $code;
-        $user->save();
-        return $this->customeResponse(null,'Mail send successfuly',200);
+        // //save the code for user to compare
+        // $user->remember_token = $code;
+        // $user->save();
+        // return $this->customeResponse(null,'Mail send successfuly',200);
 
     }
 
@@ -76,19 +76,19 @@ class AuthController extends Controller
     }
 
 
-    public function emailVerification(EmailVerificationCodeRequest $request){
-        $user = User::where('remember_token',$request->code)->first();
-        if ($user) {
-            $user->remember_token = null;
-            $user->is_verified = 1;
-            $user->email_verified_at = now();
-            $token = $user->createToken('authToken')->plainTextToken;
-            $user->save();
-        }else{
-            return $this->customeResponse(null,'not found',404);
-        }
-        return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
-    }
+    // public function emailVerification(EmailVerificationCodeRequest $request){
+    //     $user = User::where('remember_token',$request->code)->first();
+    //     if ($user) {
+    //         $user->remember_token = null;
+    //         $user->is_verified = 1;
+    //         $user->email_verified_at = now();
+    //         $token = $user->createToken('authToken')->plainTextToken;
+    //         $user->save();
+    //     }else{
+    //         return $this->customeResponse(null,'not found',404);
+    //     }
+    //     return $this->apiResponse(new UserResource($user),$token,'verified Email and registered successfully',200);
+    // }
 
 }
 
