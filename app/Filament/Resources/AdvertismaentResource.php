@@ -29,22 +29,24 @@ class AdvertismaentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('section_id')
-                    ->default(3)
+                Forms\Components\Hidden::make('section_id')
+                    ->default(6)
                     ->required(),
-                Forms\Components\Textarea::make('discription')
-                    // ->maxLength(65535),
+                Forms\Components\MarkdownEditor::make('discription')
+                    ->maxLength(65535)
+                    ->columnSpanFull()
                     ->required(),
-                Forms\Components\Textarea::make('trainning_topics')
+                Forms\Components\MarkdownEditor::make('trainning_topics')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('details')
+                Forms\Components\MarkdownEditor::make('details')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('tarinning_outcomes')
+                Forms\Components\MarkdownEditor::make('tarinning_outcomes')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -73,17 +75,19 @@ class AdvertismaentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('section_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('cost')
                     ->money()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('discription')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('reservation')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('section.name')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -102,6 +106,10 @@ class AdvertismaentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -124,6 +132,7 @@ class AdvertismaentResource extends Resource
         return [
             'index' => Pages\ListAdvertismaents::route('/'),
             'create' => Pages\CreateAdvertismaent::route('/create'),
+            'view' => Pages\ViewAdvertismaent::route('/{record}'),
             'edit' => Pages\EditAdvertismaent::route('/{record}/edit'),
         ];
     }

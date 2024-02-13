@@ -17,7 +17,7 @@ class ArticleGroup extends Model
     use FollowTrait;
 
     protected $fillable = [
-        'name',
+        'title',
         'image',
         'group_info',
         'child_category_id',

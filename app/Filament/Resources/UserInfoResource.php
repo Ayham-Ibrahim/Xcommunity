@@ -2,51 +2,56 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\UserInfoResource\Pages;
+use App\Filament\Resources\UserInfoResource\RelationManagers;
+use App\Models\UserInfo;
 use Filament\Forms;
-use Filament\Tables;
-use App\Models\Category;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ChildCategory;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ChildCategoryResource\Pages;
-use App\Filament\Resources\ChildCategoryResource\RelationManagers;
 
-class ChildCategoryResource extends Resource
+class UserInfoResource extends Resource
 {
-    protected static ?string $model = ChildCategory::class;
+    protected static ?string $model = UserInfo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-user-circle';
     protected static ?string $navigationGroup = 'Admin Management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-            Select::make('category_id')
-                ->label('category')
-                ->options(Category::pluck('name','id')->all())
-                ->required(),
-            Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+                //
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('user.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->numeric()
+                Tables\Columns\ImageColumn::make('photo')->circular(),
+                Tables\Columns\TextColumn::make('phone_number')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('facebook')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('linkedin')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('gender')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('job')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('education')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('location')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -61,10 +66,8 @@ class ChildCategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,9 +88,7 @@ class ChildCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListChildCategories::route('/'),
-            'create' => Pages\CreateChildCategory::route('/create'),
-            'edit' => Pages\EditChildCategory::route('/{record}/edit'),
+            'index' => Pages\ListUserInfos::route('/'),
         ];
     }
 

@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Job;
+use App\Models\UserList;
 use Illuminate\Http\Request;
 use App\Http\Requests\JobRequest;
 use App\Http\Resources\JobResource;
 use App\Http\Controllers\Controller;
-use App\Http\Traits\NotificationTrait;
-use App\Models\UserList;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Traits\NotificationTrait;
 
 class JobController extends Controller
 {
-    use NotificationTrait;
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      */
@@ -38,7 +39,7 @@ class JobController extends Controller
         $job = Job::create([
             'title'           => $request->title,
             'image'           => $path,
-            'description'     => $request->description,
+            'discription'     => $request->discription,
             "tasks"           => $request->tasks,
             "skills"          => $request->skills,
             "age"             => $request->age,
@@ -124,8 +125,6 @@ class JobController extends Controller
         if ($job) {
             if ($userList) {
                 $user = Auth::user();
-                $job->saveToList($user, $userList);
-                return response()->json(['message' => 'Job Saved To list ']);
                 if ($user->id == $userList->user_id) {
                     return $job->saveToList($userList);
                 }

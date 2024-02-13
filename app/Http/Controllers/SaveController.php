@@ -22,7 +22,7 @@ class SaveController extends Controller
 
         $user_id = Auth::user()->id;
         if ($userList->user_id == $user_id) {
-            $user_list_archives = UserListArchive::where('user_list_id', $userList->id)->all();
+            $user_list_archives = UserListArchive::where('user_list_id', $userList->id)->get();
         } else {
             return $this->customeResponse(null, 'you can only show your list', 404);
         }

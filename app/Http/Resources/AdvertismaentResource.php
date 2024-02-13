@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdvertismaentResource extends JsonResource
@@ -26,7 +27,7 @@ class AdvertismaentResource extends JsonResource
             'tarinning_outcomes' => $this->trainning_outcomes,
             'reservation'        => $this->reservation,
             'section'            => $section->name,
-            'image'              => asset('images/' . $this->image)
+            'image'              => Storage::url($this->image)
         ];
     }
 }

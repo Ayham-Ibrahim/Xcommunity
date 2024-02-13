@@ -22,7 +22,7 @@ class ArticleGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'              => 'required|string|max:55',
+            'title'              => 'required|string|max:55',
             'group_ingo'        => 'required|string|max:550',
             'image'             => 'nullable|image|mimes:png,jpg,jpeg,gif,sug|max:2048',
             'child_category_id' => 'required|integer|exists:child_categories,id'

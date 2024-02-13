@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('article_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title');
             $table->string('image');
             $table->text('group_info');
             $table->foreignId('child_category_id')->constrained('child_categories')->cascadeOnDelete();

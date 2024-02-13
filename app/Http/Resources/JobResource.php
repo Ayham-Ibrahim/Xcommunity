@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobResource extends JsonResource
@@ -19,7 +21,7 @@ class JobResource extends JsonResource
         return [
             "id"            =>$this->id,
             "title"         => $this->title,
-            "description"   => $this->description,
+            "discription"   => $this->discription,
             "tasks"         => $this->tasks,
             "skills"        => $this->skills,
             "age"           => $this->age,
@@ -27,7 +29,7 @@ class JobResource extends JsonResource
             'email'          =>$this->email,
             'nationality'    =>$this->nationality,
             'gender'         =>$this->gender,
-            'image'          =>asset('photos/' . $this->image),
+            'image'          =>Storage::url($this->image),
             'section'        => $section->name,
         ];
     }

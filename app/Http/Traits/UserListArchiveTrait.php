@@ -16,10 +16,10 @@ trait UserListArchiveTrait {
     public function saveToList(UserList $userList) {
         if ($this->isSavedInListByUser($userList)) {
             $this->removeItemFromList($userList);
-            $message = get_class($this) . '  removed successfully';
+            $message = $this->title . ' removed from ' .$userList->name .' successfully';
         } else {
             $this->addItemToList($userList);
-            $message = get_class($this) . ' add to list successfully';
+            $message = $this->title . ' add to list '.$userList->name .' successfully';
         }
 
         return response()->json(['message' => $message]);

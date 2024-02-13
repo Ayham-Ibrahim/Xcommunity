@@ -26,7 +26,8 @@ class UserListArchiveResource extends JsonResource
     {
         $userList = UserList::where('id', $this->user_list_id)->first();
 
-        $item = $this->createItem($this->saveable_id, $this->saveable_type);
+        $item = $this->createItem($this->saveable_type, $this->saveable_id);
+
 
         $section_id = $item->section_id;
 

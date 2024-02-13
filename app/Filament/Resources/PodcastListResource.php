@@ -41,7 +41,7 @@ class PodcastListResource extends Resource
                         ->relationship('childCategory', 'id')
                         ->options(ChildCategory::pluck('name','id')->all())
                         ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\MarkdownEditor::make('description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -63,11 +63,12 @@ class PodcastListResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('childCategory.id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('childCategory.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
@@ -87,8 +88,9 @@ class PodcastListResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // ForceDeleteAction::make(),
-                // RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -111,6 +113,7 @@ class PodcastListResource extends Resource
         return [
             'index' => Pages\ListPodcastLists::route('/'),
             'create' => Pages\CreatePodcastList::route('/create'),
+            'view' => Pages\ViewPodcastList::route('/{record}'),
             'edit' => Pages\EditPodcastList::route('/{record}/edit'),
         ];
     }

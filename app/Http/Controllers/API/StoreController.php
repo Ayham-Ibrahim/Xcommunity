@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
+use App\Models\Store;
+use App\Models\UserList;
+use App\Models\UserInterest;
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RatingRequest;
-use App\Http\Requests\StoreRequest;
+use App\Http\Traits\UploadFileTrait;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\StoreResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\DownloadFileTrait;
-use App\Http\Traits\UploadFileTrait;
-use App\Models\Store;
-use App\Models\UserInterest;
-use App\Models\UserList;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
@@ -121,13 +123,15 @@ class StoreController extends Controller
     public function download(Store $store)
     {
         if (!empty($store)) {
-            $user = Auth::user();
+            $user_id = Auth::user()->id;
+            $user = User::where('id',$user_id)->first();
             $activity = activity()->causedBy($user)->log('You have downloaded a '. $store->type . ' about '. $store->title);
-            return $this->downloadFile($store->file, 'stores');
+            $store->downloadFile($user,$store->file);
+            $path = storage_path('app\public\\'.$store->file);
+            return response()->download($path);
         }else{
             return $this->customeResponse(null,'not found',404);
         }
-
     }
 
     public function storetRating (RatingRequest $request , Store $store)

@@ -32,7 +32,7 @@ class ArticleGroupResource extends Resource
                     ->relationship('childCategory', 'id')
                     ->options(ChildCategory::pluck('name','id')->all())
                     ->required(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
@@ -46,7 +46,7 @@ class ArticleGroupResource extends Resource
                     ->enableOpen()
                     ->enableDownload()
                     ->required(),
-                Forms\Components\Textarea::make('group_info')
+                Forms\Components\MarkdownEditor::make('group_info')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -58,10 +58,10 @@ class ArticleGroupResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('childCategory.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
@@ -83,6 +83,8 @@ class ArticleGroupResource extends Resource
                 Tables\Actions\EditAction::make(),
                 ForceDeleteAction::make(),
                 RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -105,6 +107,7 @@ class ArticleGroupResource extends Resource
         return [
             'index' => Pages\ListArticleGroups::route('/'),
             'create' => Pages\CreateArticleGroup::route('/create'),
+            'view' => Pages\ViewArticleGroup::route('/{record}'),
             'edit' => Pages\EditArticleGroup::route('/{record}/edit'),
         ];
     }

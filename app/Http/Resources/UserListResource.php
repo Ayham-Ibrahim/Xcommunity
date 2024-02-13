@@ -15,10 +15,10 @@ class UserListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = User::where('id',$this->user_id);
+        $user = User::where('id',$this->user_id)->first();
         return [
-            "id"    => $this->id,
-            'name' => $this->title,
+            'id'    => $this->id,
+            'name' => $this->name,
             'user_id' => new UserResource($user),
         ];
     }

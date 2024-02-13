@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -24,7 +25,7 @@ class ArticleResource extends JsonResource
             'title'                => $this->title,
             'body'                 => $this->body,
             'time_to_read'         => $this->time_to_read,
-            'image'                => asset('images/' . $this->image),
+            'image'                => Storage::url($this->image),
             'timeSincePublication' => Carbon::parse($this->created_at)->diffForHumans(),
             'visitors_count'       => $this->visitorCount(),
             'likes_count'          => $this->likesCount(),

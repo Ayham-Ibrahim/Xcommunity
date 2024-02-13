@@ -18,39 +18,29 @@ class JobResource extends Resource
 {
     protected static ?string $model = Job::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-briefcase';
+    protected static ?string $navigationGroup = 'Sections';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('section_id')
+                Forms\Components\Hidden::make('section_id')
                     ->required()
-                    ->default(5)
-                    ->numeric(),
+                    ->default(5),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('discription')
+                Forms\Components\MarkdownEditor::make('discription')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->preserveFilenames()
-                    ->directory('images/jobs')
-                    ->getUploadedFileNameForStorageUsing(
-                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                            ->prepend(now()->timestamp),
-                    )
-                    ->enableOpen()
-                    ->enableDownload()
-                    ->required(),
-                Forms\Components\Textarea::make('tasks')
+                Forms\Components\MarkdownEditor::make('tasks')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('skills')
+                Forms\Components\MarkdownEditor::make('skills')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -70,6 +60,17 @@ class JobResource extends Resource
                 Forms\Components\TextInput::make('nationality')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->preserveFilenames()
+                    ->directory('images/jobs')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                            ->prepend(now()->timestamp),
+                    )
+                    ->enableOpen()
+                    ->enableDownload()
+                    ->required(),
             ]);
     }
 
@@ -77,9 +78,7 @@ class JobResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('section_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
@@ -93,6 +92,8 @@ class JobResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nationality')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('section.name')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -111,8 +112,9 @@ class JobResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                ForceDeleteAction::make(),
-                RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -135,6 +137,7 @@ class JobResource extends Resource
         return [
             'index' => Pages\ListJobs::route('/'),
             'create' => Pages\CreateJob::route('/create'),
+            'view' => Pages\ViewJob::route('/{record}'),
             'edit' => Pages\EditJob::route('/{record}/edit'),
         ];
     }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Traits\VisitorableTrait;
-use App\Models\ChildCategory;
 use Illuminate\Http\Request;
+use App\Models\ChildCategory;
+use App\Http\Traits\VisitorableTrait;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleGroupResource extends JsonResource
@@ -22,9 +23,9 @@ class ArticleGroupResource extends JsonResource
         $articles = $this->articles;
         return [
             'id'               => $this->id,
-            'name'             => $this->name,
+            'title'             => $this->title,
             'group_info'       => $this->group_info,
-            'image'            => asset('images/' . $this->image),
+            'image'            => Storage::url($this->image),
             'category'         => $category->name,
             'articles_count'   => $articles->count(),
             'visitors_count'   => $this->visitorCount(),
