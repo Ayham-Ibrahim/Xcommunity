@@ -14,10 +14,10 @@ trait UserArchiveTrait {
     public function saveToArchive(User $user) {
         if ($this->isSavedInArchiveByUser($user)) {
             $this->removeItemFromArchive($user);
-            $message = get_class($this) . '  removed successfully';
+            $message = $this->title .' unsaved successfully';
         } else {
             $this->addItemToArchive($user);
-            $message = get_class($this) . ' add to Archive successfully';
+            $message = $this->title .' saved successfully';
         }
 
         return response()->json(['message' => $message]);

@@ -30,7 +30,7 @@ class UserInfoController extends Controller
     public function store(UserInfoRequest $request)
     {
         $user_id = Auth::user()->id;
-        $image_path = $this->UploadFile($request, 'User Infos', 'photo', 'images');
+        $image_path = $this->UploadFile($request, 'images/UserInfos', 'photo', 'public');
 
         $user_info = UserInfo::create([
             'user_id'            =>$user_id,
@@ -55,7 +55,7 @@ class UserInfoController extends Controller
 
         $data = new UserInfoResource($user_info);
 
-        return $this->customeRespone($data, "User Info Created Successfuly", 201);
+        return $this->customeResponse($data, "User Info Created Successfuly", 201);
     }
 
     /**
@@ -65,9 +65,9 @@ class UserInfoController extends Controller
     {
         if(!empty($user_info)){
             $data = new UserInfoResource($user_info);
-            return $this->customeRespone($data, "Done!", 200);
+            return $this->customeResponse($data, "Done!", 200);
         }
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
     /**
@@ -76,7 +76,7 @@ class UserInfoController extends Controller
     public function update(UserInfoRequest $request, UserInfo $user_info)
     {
         if (!empty($user_info->photo)) {
-            $image_path = $this->UploadFile($request, 'User Infos', 'photo', 'images');
+            $image_path = $this->UploadFile($request, 'images/UserInfos', 'photo', 'public');
         } else {
             $image_path = $user_info->photo;
         }
@@ -104,7 +104,7 @@ class UserInfoController extends Controller
         $data = new UserInfoResource($user_info);
 
 
-        return $this->customeRespone($data, "User Info Updated Successfuly", 200);
+        return $this->customeResponse($data, "User Info Updated Successfuly", 200);
     }
 
     /**
@@ -113,11 +113,15 @@ class UserInfoController extends Controller
     public function destroy(UserInfo $user_info)
     {
         if (!empty($user_info)) {
-            $user_info->delete();
-            return $this->customeRespone(null , "User Info deleted Successfully" , 200);
+            $user_id = Auth::user()->id;
+            if ($user_id === $user_info->user_id) {
+                $user_info->delete();
+                return $this->customeResponse(null , "User Info deleted Successfully" , 200);
+            } else {
+                return $this->customeResponse(null, 'You can only delete your own userList.', 403);
+            }
         }
-
-        return $this->customeRespone(null, "not found", 404);
+        return $this->customeResponse(null, "not found", 404);
     }
 
 }

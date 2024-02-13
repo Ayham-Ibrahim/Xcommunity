@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserInfoResource extends JsonResource
@@ -34,7 +35,7 @@ class UserInfoResource extends JsonResource
             'education_priv'     => $this->education_priv,
             'location'           => $this->location,
             'location_priv'      => $this->location_priv,
-            'photo'              => asset('images/' . $this->photo),
+            'photo'              => Storage::url($this->photo),
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Section;
 use App\Models\PodcastList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PodcastResource extends JsonResource
@@ -16,16 +18,16 @@ class PodcastResource extends JsonResource
     public function toArray(Request $request): array
     {
         $podcastList_id = $this->podcastList_id;
-        $podcastList = PodcastList::where('id',$podcastList_id)->first;
+        $podcastList = PodcastList::where('id',$podcastList_id)->first();
         $section = Section::find($this->section_id);
         $child_category = $this->childCategory;
 
         return [
             "id"                =>$this->id,
             "title"             => $this->title,
-            "voice"             => $this->assets('files/' . $this->voice),
+            "voice"             => Storage::url($this->voice),
             "duration"          => $this->duration,
-            "text_file"         => $this->assets('files/' . $this->text_file),
+            "text_file"         => Storage::url($this->text_file),
             "podcast_list_id"   => $this->podcastList,
             'visitors_count'    => $this->visitorCount(),
             'likes_count'       => $this->likesCount(),

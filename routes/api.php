@@ -49,6 +49,8 @@ Route::post('/reset', [ResetPasswordController::class, 'reset']);
 Route::get('login/{provider}', [SocialiteLoginController::class, 'redirectToProvider']);
 Route::get('login/{provider}/callback', [SocialiteLoginController::class, 'handleProviderCallback']);
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
 
 
@@ -222,11 +224,12 @@ Route::middleware('auth:sanctum')->group(function () {
     ########################################## USER LIST CONTROLLER #######################################
     #######################################################################################################
 
-    Route::get('/userLists', [UserListController::class, 'index']);
-    Route::post('/add-userList', [UserListController::class, 'store']);
-    Route::get('/userList/{userList}', [UserListController::class, 'show']);
-    Route::put('/update-userList/{userList}', [UserListController::class, 'update']);
-    Route::delete('/delete-userList/{userList}', [UserListController::class, 'delete']);
+
+    Route::get('/userLists',[UserListController::class,'index']);
+    Route::post('/add-userList',[UserListController::class,'store']);
+    Route::get('/userList/{userList}',[UserListController::class,'show']);
+    Route::put('/update-userList/{userList}',[UserListController::class,'update']);
+    Route::delete('/delete-userList/{userList}',[UserListController::class,'destroy']);
 
     #######################################################################################################
     #######################################################################################################
@@ -244,7 +247,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Show Archive
-    Route::get('/showUserArchiveItem', [SaveController::class, 'showUserArchiveItem']);
+
+    Route::get('/showUserArchiveItem' , [SaveController::class, 'showUserArchiveItem']);
+    Route::get('/showUserListItem/{userList}' , [SaveController::class, 'showUserListItem']);
+
+
 
 
     Route::post('/store-token', [NotificationController::class, 'updateDeviceToken']);

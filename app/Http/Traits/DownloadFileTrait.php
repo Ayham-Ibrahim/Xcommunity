@@ -4,6 +4,8 @@ namespace App\Http\Traits;
 
 use App\Models\User;
 use App\Models\Download;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 trait DownloadFileTrait {
 
@@ -11,20 +13,14 @@ trait DownloadFileTrait {
     {
         return $this->morphMany(Download::class, 'downloadable');
     }
-
-    public function downloadFile(User $user,$file,$folder)
+    public function downloadFile($user,$file)
     {
-        if($this->hasDownloadByUser($user)){
-            $user->downloads()->create([
+        if(!$this->hasDownloadByUser($user)){
+            $this->downloads()->create([
+                'user_id'             => $user->id,
                 'downloadable_id'     => $this->id,
                 'downloadable_type'   => get_class($this),
             ]);
-            $path = storage_path(asset("files/{$folder}/{$file}"));
-            if (file_exists($path)) {
-                return response()->download($path);
-            } else {
-                return response()->json(['message' => 'Not Found!'], 404);
-            }
         }
     }
 

@@ -42,10 +42,12 @@ class PodcastResource extends Resource
                     ->relationship('childCategory', 'id')
                     ->options(ChildCategory::pluck('name','id')->all())
                     ->required(),
-                Forms\Components\TextInput::make('section_id')
+                Forms\Components\TextInput::make('duration')
                     ->required()
-                    ->default(2)
-                    ->numeric(),
+                    ->maxLength(255),
+                Forms\Components\Hidden::make('section_id')
+                    ->required()
+                    ->default(2),
                 Forms\Components\FileUpload::make('voice')
                     ->required()
                     ->preserveFilenames()
@@ -56,9 +58,6 @@ class PodcastResource extends Resource
                     )
                     ->enableOpen()
                     ->enableDownload(),
-                Forms\Components\TextInput::make('duration')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\FileUpload::make('text_file')
                     ->preserveFilenames()
                     ->directory('files/podcast/podcast-text')
@@ -77,6 +76,9 @@ class PodcastResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('podcastList.title')
                     ->numeric()
                     ->sortable(),
@@ -86,8 +88,6 @@ class PodcastResource extends Resource
                 Tables\Columns\TextColumn::make('section.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('voice')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('duration')
@@ -114,6 +114,7 @@ class PodcastResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -136,6 +137,7 @@ class PodcastResource extends Resource
         return [
             'index' => Pages\ListPodcasts::route('/'),
             'create' => Pages\CreatePodcast::route('/create'),
+            'view' => Pages\ViewPodcast::route('/{record}'),
             'edit' => Pages\EditPodcast::route('/{record}/edit'),
         ];
     }

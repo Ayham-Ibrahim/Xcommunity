@@ -5,12 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Models\UserList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ApiResponseTrait;
 use App\Http\Requests\UserListRequest;
 use App\Http\Resources\UserListResource;
 
 
 class UserListController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      */
@@ -50,7 +53,7 @@ class UserListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,UserList $userList)
+    public function update(UserListRequest $request,UserList $userList)
     {
         if ($userList) {
 
@@ -59,8 +62,7 @@ class UserListController extends Controller
                 return $this->customeResponse(null, 'You can only edit your own userList.', 403);
             } else {
                 $Validation = $request->validated();
-                $userList = UserList::create([
-                    'user_id'  => $user_id,
+                $userList->update([
                     'name'     => $request->name,
                 ]);
                 return $this->customeResponse(new UserListResource($userList), 'updated successfully', 200);
@@ -75,7 +77,13 @@ class UserListController extends Controller
     public function destroy(UserList $userList)
     {
         if ($userList) {
-            return $this->customeResponse("", 'deleted successfully', 200);
+            $user_id = Auth::user()->id;
+            if ($user_id === $userList->user_id) {
+                $userList->delete();
+                return $this->customeResponse("", 'deleted successfully', 200);
+            } else {
+                return $this->customeResponse(null, 'You can only delete your own userList.', 403);
+            }
         }
         return $this->customeResponse(null, 'userList not found', 404);
     }

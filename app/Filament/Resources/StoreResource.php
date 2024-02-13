@@ -20,7 +20,9 @@ class StoreResource extends Resource
 {
     protected static ?string $model = Store::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationGroup = 'Sections';
+
 
     public static function form(Form $form): Form
     {
@@ -35,15 +37,15 @@ class StoreResource extends Resource
                         'book' => 'book',
                         'supplement' => 'supplement',
                     ]),
-                    Forms\Components\Select::make('category_id')
+                Forms\Components\Select::make('category_id')
                     ->label('category')
                     ->relationship('Category', 'id')
                     ->options(Category::pluck('name','id')->all())
                     ->required(),
-                Forms\Components\TextInput::make('section_id')
+                Forms\Components\Hidden::make('section_id')
                     ->required()
-                    ->default(3),
-                Forms\Components\Textarea::make('description')
+                    ->default(4),
+                Forms\Components\MarkdownEditor::make('description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -75,14 +77,15 @@ class StoreResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('section_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('section.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('file')
                     ->searchable(),
@@ -106,8 +109,10 @@ class StoreResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // ForceDeleteAction::make(),
-                // RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -130,6 +135,7 @@ class StoreResource extends Resource
         return [
             'index' => Pages\ListStores::route('/'),
             'create' => Pages\CreateStore::route('/create'),
+            'view' => Pages\ViewStore::route('/{record}'),
             'edit' => Pages\EditStore::route('/{record}/edit'),
         ];
     }

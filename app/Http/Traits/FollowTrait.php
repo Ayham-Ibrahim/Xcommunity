@@ -16,10 +16,10 @@ trait FollowTrait
     public function followToggle (User $user){
         if ($this->hasFollowedByUser($user)){
             $this->unFollow($user);
-            return $message = 'you are Unfollowing ' . get_class($this);
+            return $message = 'you are Unfollowing ' . $this->title;
         } else {
             $this->follow($user);
-            return $message = 'you are following ' . get_class($this);
+            return $message = 'you are following ' . $this->title;
         }
     }
 

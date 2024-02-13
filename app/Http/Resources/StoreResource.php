@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StoreResource extends JsonResource
@@ -20,8 +21,8 @@ class StoreResource extends JsonResource
             'category'        => $category->name,
             'title'           => $this->title,
             'description'     => $this->description,
-            'file'            => asset('files/' . $this->file),
-            'image'           => asset('images/' . $this->image),
+            'file'            => Storage::url($this->file),
+            'image'           => Storage::url($this->image),
             'visitors_count'  => $this->visitorCount(),
             'downloads_count' => $this->downloadsCount(),
             'rating'          => $this->averageRating(),

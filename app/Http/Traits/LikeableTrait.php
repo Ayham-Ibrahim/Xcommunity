@@ -16,7 +16,7 @@ trait LikeableTrait
     {
         if ($this->isLikedByUser($user)) {
             $this->removeLike($user);
-            $message = get_class($this) . ' like removed successfully';
+            $message = $this->title .' '. $this->section->name .' like removed successfully';
         } else {
             $this->addLike($user);
 
@@ -25,7 +25,8 @@ trait LikeableTrait
             }
             activity()->causedBy($user)->log('You liked the '. $this->section .' about ' . $this->title);
 
-            $message = get_class($this) . ' liked successfully';
+            $message = $this->title .' '. $this->section->name .' liked successfully';
+
         }
 
         return response()->json(['message' => $message]);
