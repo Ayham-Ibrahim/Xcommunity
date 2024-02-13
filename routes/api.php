@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register',[AuthController::class,'register']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 // Route::get('/send-mail-verification/{email}', [AuthController::class, 'sendVerifyEmail']);
 Route::get('/verify-email/{code}', [AuthController::class, 'emailVerification']);
@@ -62,15 +62,15 @@ Route::middleware('auth:sanctum')->group(function () {
     ######################################## PODCAST CONTROLLER ###########################################
     #######################################################################################################
 
-    Route::get('/podcasts',[PodcastController::class,'index']);
-    Route::post('/add-podcast',[PodcastController::class,'store']);
-    Route::get('/podcast/{podcast}',[PodcastController::class,'show']);
-    Route::put('/update-podcast/{podcast}',[PodcastController::class,'update']);
-    Route::delete('/delete-podcast/{podcast}',[PodcastController::class,'delete']);
-    Route::post('/savetoArchive/{podcast}',[PodcastController::class,'savetoArchive']);
+    Route::get('/podcasts', [PodcastController::class, 'index']);
+    Route::post('/add-podcast', [PodcastController::class, 'store']);
+    Route::get('/podcast/{podcast}', [PodcastController::class, 'show']);
+    Route::put('/update-podcast/{podcast}', [PodcastController::class, 'update']);
+    Route::delete('/delete-podcast/{podcast}', [PodcastController::class, 'delete']);
+    Route::post('/savetoArchive/{podcast}', [PodcastController::class, 'savetoArchive']);
     Route::get('/interest_podcasts', [PodcastController::class, 'interstePodcast']);
-    Route::post('/save_Podcast_To_List/{userList}/{podcast}',[PodcastController::class,'saveToList']);
-    Route::post('/save_podcast_to_Archive/{podcast}',[PodcastController::class,'savetoArchive']);
+    Route::post('/save_Podcast_To_List/{userList}/{podcast}', [PodcastController::class, 'saveToList']);
+    Route::post('/save_podcast_to_Archive/{podcast}', [PodcastController::class, 'savetoArchive']);
     Route::post('/podcast/{podcast}/toggle-like', [PodcastController::class, 'toggleLike']);
 
 
@@ -82,12 +82,12 @@ Route::middleware('auth:sanctum')->group(function () {
     ###################################### PODCAST LIST CONTROLLER ########################################
     #######################################################################################################
 
-    Route::get('/podcastLists',[PodcastListController::class,'index']);
-    Route::post('/add-podcastList',[PodcastListController::class,'store']);
-    Route::get('/podcastList/{podcastList}',[PodcastListController::class,'show']);
-    Route::put('/update-podcastList/{podcastList}',[PodcastListController::class,'update']);
-    Route::delete('/delete-podcastList/{podcastList}',[PodcastListController::class,'delete']);
-    Route::post('/podcastListRating/{podcastList}',[PodcastListController::class,'podcastListRating']);
+    Route::get('/podcastLists', [PodcastListController::class, 'index']);
+    Route::post('/add-podcastList', [PodcastListController::class, 'store']);
+    Route::get('/podcastList/{podcastList}', [PodcastListController::class, 'show']);
+    Route::put('/update-podcastList/{podcastList}', [PodcastListController::class, 'update']);
+    Route::delete('/delete-podcastList/{podcastList}', [PodcastListController::class, 'delete']);
+    Route::post('/podcastListRating/{podcastList}', [PodcastListController::class, 'podcastListRating']);
     Route::post('/podcastList/{podcastList}/follow-toggle', [PodcastListController::class, 'followList']);
     Route::get('/interest_podcastList', [PodcastListController::class, 'interstePodcastList']);
 
@@ -100,13 +100,13 @@ Route::middleware('auth:sanctum')->group(function () {
     ########################################## JOB CONTROLLER #############################################
     #######################################################################################################
 
-    Route::get('/jobs',[JobController::class,'index']);
-    Route::post('/add-job',[JobController::class,'store']);
-    Route::get('/job/{job}',[JobController::class,'show']);
-    Route::put('/update-job/{job}',[JobController::class,'update']);
-    Route::delete('/delete-job/{job}',[JobController::class,'delete']);
-    Route::post('/save_job_to_Archive/{job}',[JobController::class,'savetoArchive']);
-    Route::post('/save_job_To_List/{userList}/{job}',[JobController::class,'saveToList']);
+    Route::get('/jobs', [JobController::class, 'index']);
+    Route::post('/add-job', [JobController::class, 'store']);
+    Route::get('/job/{job}', [JobController::class, 'show']);
+    Route::put('/update-job/{job}', [JobController::class, 'update']);
+    Route::delete('/delete-job/{job}', [JobController::class, 'delete']);
+    Route::post('/save_job_to_Archive/{job}', [JobController::class, 'savetoArchive']);
+    Route::post('/save_job_To_List/{userList}/{job}', [JobController::class, 'saveToList']);
 
 
     #######################################################################################################
@@ -139,8 +139,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_article/{article}', [ArticleController::class, 'update']);
     Route::delete('/delete_article/{article}', [ArticleController::class, 'destroy']);
     Route::get('/interest_articles', [ArticleController::class, 'intersteArticles']);
-    Route::post('/save_article_to_Archive/{article}',[ArticleController::class,'savetoArchive']);
-    Route::post('/save_article_To_List/{userList}/{article}',[ArticleController::class,'saveToList']);
+    Route::post('/save_article_to_Archive/{article}', [ArticleController::class, 'savetoArchive']);
+    Route::post('/save_article_To_List/{userList}/{article}', [ArticleController::class, 'saveToList']);
     Route::post('/toggle_like_article/{article}', [ArticleController::class, 'toggleLike']);
 
 
@@ -157,8 +157,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create_advertismaent', [AdvertismaentController::class, 'store']);
     Route::post('/update_advertismaent/{advertismaent}', [AdvertismaentController::class, 'update']);
     Route::delete('/delete_advertismaent/{advertismaent}', [AdvertismaentController::class, 'destroy']);
-    Route::post('/save_advertismaent_to_Archive/{advertismaent}',[AdvertismaentController::class,'savetoArchive']);
-    Route::post('/save_advertismaent_To_List/{userList}/{advertismaent}',[AdvertismaentController::class,'saveToList']);
+    Route::post('/save_advertismaent_to_Archive/{advertismaent}', [AdvertismaentController::class, 'savetoArchive']);
+    Route::post('/save_advertismaent_To_List/{userList}/{advertismaent}', [AdvertismaentController::class, 'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
@@ -174,10 +174,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_store/{store}', [StoreController::class, 'update']);
     Route::delete('/delete_store/{store}', [StoreController::class, 'destroy']);
     Route::get('/interest_stores/{type}', [StoreController::class, 'interstestores']);
-    Route::get('/download_store/{store}',[StoreController::class,'download']);
-    Route::post('/storeRating/{store}',[StoreController::class,'storetRating']);
-    Route::post('/save_store_to_Archive/{store}',[StoreController::class,'savetoArchive']);
-    Route::post('/save_store_To_List/{userList}/{store}',[StoreController::class,'saveToList']);
+    Route::get('/download_store/{store}', [StoreController::class, 'download']);
+    Route::post('/storeRating/{store}', [StoreController::class, 'storetRating']);
+    Route::post('/save_store_to_Archive/{store}', [StoreController::class, 'savetoArchive']);
+    Route::post('/save_store_To_List/{userList}/{store}', [StoreController::class, 'saveToList']);
 
     #######################################################################################################
     #######################################################################################################
@@ -224,6 +224,7 @@ Route::middleware('auth:sanctum')->group(function () {
     ########################################## USER LIST CONTROLLER #######################################
     #######################################################################################################
 
+
     Route::get('/userLists',[UserListController::class,'index']);
     Route::post('/add-userList',[UserListController::class,'store']);
     Route::get('/userList/{userList}',[UserListController::class,'show']);
@@ -238,8 +239,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
 
     // SEARCH
-    Route::get('/serch/{search_param}', [SearchController::class, 'search']);
-
+    Route::get('/search/{search_param}', [SearchController::class, 'search']);
 
     // ACTIVITY
     Route::get('/yourActivity', [ActivityController::class, 'yourActivity']);
@@ -247,12 +247,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Show Archive
+
     Route::get('/showUserArchiveItem' , [SaveController::class, 'showUserArchiveItem']);
     Route::get('/showUserListItem/{userList}' , [SaveController::class, 'showUserListItem']);
 
 
+
+
     Route::post('/store-token', [NotificationController::class, 'updateDeviceToken']);
     Route::post('/send-web-notification', [NotificationController::class, 'sendNotification']);
-
-
 });
