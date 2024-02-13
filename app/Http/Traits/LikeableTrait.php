@@ -19,7 +19,12 @@ trait LikeableTrait
             $message = get_class($this) . ' like removed successfully';
         } else {
             $this->addLike($user);
+
+            if ($this->section->name == 'Store' ){
+                activity()->causedBy($user)->log('You liked the '. $this->type .' about ' . $this->title);
+            }
             activity()->causedBy($user)->log('You liked the '. $this->section .' about ' . $this->title);
+
             $message = get_class($this) . ' liked successfully';
         }
 
