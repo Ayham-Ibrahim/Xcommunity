@@ -132,11 +132,15 @@ class ArticleController extends Controller
     {
         if ($article) {
             if ($userList) {
+
                 $user = Auth::user();
+
                 if ($user->id == $userList->user_id) {
                     return $article->saveToList($userList);
                 }
+
                 return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
+
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }

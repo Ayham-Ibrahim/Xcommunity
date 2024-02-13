@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Podcast extends Model
 {
-    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,UserArchiveTrait,UserListArchiveTrait;
+    use HasFactory,SoftDeletes,LikeableTrait,VisitorableTrait,UserArchiveTrait,UserListArchiveTrait,Searchable;
 
     protected $fillable = [
         'title',
@@ -26,6 +27,14 @@ class Podcast extends Model
         'child_category_id',
         'section_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'    => $this->title,
+            'duration' => $this->duration,
+        ];
+    }
 
     public function section()
     {
