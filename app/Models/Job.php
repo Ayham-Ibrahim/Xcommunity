@@ -31,7 +31,7 @@ class Job extends Model
     {
         return [
             'title'       => $this->title,
-            'description' => $this->description,
+            'discription' => $this->description,
             'tasks'       => $this->tasks,
             'skills'      => $this->skills,
             'age'         => $this->age,

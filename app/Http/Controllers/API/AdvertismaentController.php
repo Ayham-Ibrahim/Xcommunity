@@ -56,7 +56,7 @@ class AdvertismaentController extends Controller
      */
     public function show(Advertismaent $advertismaent)
     {
-        if(!empty($advertismaent)){
+        if (!empty($advertismaent)) {
             $data = new AdvertismaentResource($advertismaent);
             return $this->customeResponse($data, "Done!", 200);
         }
@@ -99,7 +99,7 @@ class AdvertismaentController extends Controller
     {
         if (!empty($advertismaent)) {
             $advertismaent->delete();
-            return $this->customeResponse(null , "Advertismaent deleted successfully" , 200);
+            return $this->customeResponse(null, "Advertismaent deleted successfully", 200);
         }
 
         return $this->customeResponse(null, "not found", 404);
@@ -114,15 +114,19 @@ class AdvertismaentController extends Controller
         return $this->customeResponse(null, "not found", 404);
     }
 
-    public function saveToList(UserList $userList,Advertismaent $Advertismaent)
+    public function saveToList(UserList $userList, Advertismaent $Advertismaent)
     {
         if ($Advertismaent) {
+
             if ($userList) {
+
                 $user = Auth::user();
+
                 if ($user->id == $userList->user_id) {
                     return $Advertismaent->saveToList($userList);
                 }
-                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
+
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'], 403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }
