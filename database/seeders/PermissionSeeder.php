@@ -40,6 +40,22 @@ class PermissionSeeder extends Seeder
         $permission3 = Permission::create(['name' => 'update: permission']);
         $permission4 = Permission::create(['name' => 'delete: permission']);
 
+        // article MODEL
+        $createArticle = Permission::create(['name' => 'create: article']);
+        $readArticle = Permission::create(['name' => 'read: article']);
+        $updateArticle = Permission::create(['name' => 'update: article']);
+        $deleteArticle = Permission::create(['name' => 'delete: article']);
+
+        //  Store MODEL
+        $createBook = Permission::create(['name' => 'create: Book']);
+        $readBook = Permission::create(['name' => 'read: Book']);
+        $updateBook = Permission::create(['name' => 'update: Book']);
+        $deleteBook = Permission::create(['name' => 'delete: Book']);
+        $createSupplement = Permission::create(['name' => 'create: Supplement']);
+        $readSupplement = Permission::create(['name' => 'read: Supplement']);
+        $updateSupplement = Permission::create(['name' => 'update: Supplement']);
+        $deleteSupplement = Permission::create(['name' => 'delete: Supplement']);
+
         // ADMINS
         $adminPermission1 = Permission::create(['name' => 'read: admin']);
         $adminPermission2 = Permission::create(['name' => 'update: admin']);
@@ -67,6 +83,23 @@ class PermissionSeeder extends Seeder
             $userPermission1,
         ]);
 
+        $bloger = Role::create(['name' => 'bloger'])->syncPermissions([
+            $createArticle,
+            $readArticle,
+            $updateArticle,
+            $deleteArticle,
+        ]);
+        $marketer = Role::create(['name' => 'marketer'])->syncPermissions([
+            $createBook,
+            $readBook,
+            $updateBook,
+            $deleteBook,
+            $createSupplement,
+            $readSupplement,
+            $updateSupplement,
+            $deleteSupplement,
+        ]);
+
         User::create([
             'name' => 'owner',
             'is_admin' => 1,
@@ -85,7 +118,7 @@ class PermissionSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('marketer1234'),
             'remember_token' => Str::random(10),
-        ]);
+        ])->assignRole($marketer);
 
 
         User::create([
@@ -96,7 +129,7 @@ class PermissionSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('bloger1234'),
             'remember_token' => Str::random(10),
-        ]);
+        ])->assignRole($bloger);;
 
     }
 }

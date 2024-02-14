@@ -43,7 +43,7 @@ class ArticleResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('article_group_id')
                     ->relationship('articleGroup', 'id')
-                    ->options(ArticleGroup::pluck('name','id')->all())
+                    ->options(ArticleGroup::pluck('title','id')->all())
                     ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
@@ -77,7 +77,7 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('articleGroup.name')
+                Tables\Columns\TextColumn::make('articleGroup.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('childCategory.name')
