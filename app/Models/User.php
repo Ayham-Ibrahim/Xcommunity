@@ -90,4 +90,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(verificationCode::class, 'user_id', 'id');
     }
+
+    public function platforms()
+    {
+        return $this->belongsToMany(Platform::class, 'users_platforms');
+    }
 }

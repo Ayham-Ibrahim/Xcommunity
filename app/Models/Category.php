@@ -34,4 +34,9 @@ class Category extends Model
         return $this->belongsToMany(User::class, 'user_interests');
     }
 
+    public function platforms()
+    {
+        return $this->belongsToMany(Platform::class, 'categories_platforms');
+    }
+
 }
