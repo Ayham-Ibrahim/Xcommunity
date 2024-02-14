@@ -21,6 +21,7 @@ trait DownloadFileTrait {
                 'downloadable_id'     => $this->id,
                 'downloadable_type'   => get_class($this),
             ]);
+
         }
     }
 

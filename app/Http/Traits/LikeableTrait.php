@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 use App\Models\User;
 use App\Models\Like;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\DB;
 
 trait LikeableTrait
 {
@@ -18,14 +19,23 @@ trait LikeableTrait
             $this->removeLike($user);
             $message = $this->title .' '. $this->section->name .' like removed successfully';
         } else {
-            $this->addLike($user);
+
+            DB::beginTransaction();
+            try {
+                $this->addLike($user);
 
             if ($this->section->name == 'Store' ){
                 activity()->causedBy($user)->log('You liked the '. $this->type .' about ' . $this->title);
             }
             activity()->causedBy($user)->log('You liked the '. $this->section .' about ' . $this->title);
 
+            DB::commit();
             $message = $this->title .' '. $this->section->name .' liked successfully';
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
+
 
         }
 
