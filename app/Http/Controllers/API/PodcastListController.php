@@ -14,17 +14,18 @@ use App\Models\ChildCategory;
 use App\Models\PodcastList;
 use App\Models\UserInterest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PodcastListController extends Controller
 {
-    use ApiResponseTrait,UploadFileTrait;
+    use ApiResponseTrait, UploadFileTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $podcastLists = PodcastList::all();
-        return $this->customeResponse(PodcastListResource::collection($podcastLists),'Done',200);
+        return $this->customeResponse(PodcastListResource::collection($podcastLists), 'Done', 200);
     }
 
     /**
@@ -34,20 +35,20 @@ class PodcastListController extends Controller
     {
         $Validation = $request->validated();
 
-        if(!empty($request->image)){
-            $path = $this->UploadFile($request,'podcastLists','image','photos');
-        }else{
+        if (!empty($request->image)) {
+            $path = $this->UploadFile($request, 'podcastLists', 'image', 'photos');
+        } else {
             $path = null;
         }
 
         $podcastList = PodcastList::create([
-            'title'             =>$request->title,
-            'description'       =>$request->decsription,
+            'title'             => $request->title,
+            'description'       => $request->decsription,
             'image'             => $path,
-            "child_category_id" =>$request->child_category_id,
+            "child_category_id" => $request->child_category_id,
         ]);
 
-        return $this->customeResponse(new PodcastListResource($podcastList),'podcastList created successfully',200);
+        return $this->customeResponse(new PodcastListResource($podcastList), 'podcastList created successfully', 200);
     }
 
     /**
@@ -55,12 +56,12 @@ class PodcastListController extends Controller
      */
     public function show(PodcastList $podcastList)
     {
-        if($podcastList){
+        if ($podcastList) {
             $user = Auth::user();
             $podcastList->visit($user);
-            return $this->customeResponse(new PodcastListResource($podcastList),'Done',200);
-        }else{
-            return $this->customeResponse(null,'podcastList not found',404);
+            return $this->customeResponse(new PodcastListResource($podcastList), 'Done', 200);
+        } else {
+            return $this->customeResponse(null, 'podcastList not found', 404);
         }
     }
 
@@ -69,23 +70,22 @@ class PodcastListController extends Controller
      */
     public function update(PodcastListRequest $request, PodcastList $podcastList)
     {
-        if($podcastList){
-            if(!empty($request->image)){
-                $path = $this->UploadFile($request,'podcastLists','image','photos');
-            }else{
+        if ($podcastList) {
+            if (!empty($request->image)) {
+                $path = $this->UploadFile($request, 'podcastLists', 'image', 'photos');
+            } else {
                 $path = $podcastList->image;
             }
             $podcastList->update([
-                'title'             =>$request->title,
-                'description'       =>$request->decsription,
+                'title'             => $request->title,
+                'description'       => $request->decsription,
                 'image'             => $path,
-                "child_category_id" =>$request->child_category_id,
+                "child_category_id" => $request->child_category_id,
             ]);
             return $this->customeResponse(new PodcastListResource($podcastList), "podcastList Updated Successfuly", 200);
-        }else{
-            return $this->customeResponse(null,'podcastList not found',404);
+        } else {
+            return $this->customeResponse(null, 'podcastList not found', 404);
         };
-
     }
 
     /**
@@ -93,50 +93,45 @@ class PodcastListController extends Controller
      */
     public function destroy(PodcastList $podcastList)
     {
-        if($podcastList){
+        if ($podcastList) {
             $podcastList->delete();
-            return $this->customeResponse("",'podcastList deleted successfully',200);
-        }else{
-            return $this->customeResponse(null,'podcastList not found',404);
+            return $this->customeResponse("", 'podcastList deleted successfully', 200);
+        } else {
+            return $this->customeResponse(null, 'podcastList not found', 404);
         }
     }
 
-    // public function podcastListRating(RatingRequest $request , PodcastList $podcastList)
-    // {
-    //     if(!empty($podcastList)){
-    //         $user = Auth::user();
-    //         $rate = $request->rate;fdcd
-    //         $podcastList->rateOnce($rate);
-    //         $data = new PodcastListResource($podcastList);
-    //         $activity = activity()->causedBy($user)->log('You have rated a podcast list about '. $podcastList->title);
-    //         return $this->customeResponse($data, 'Done!', 200);
-    //     }
-    //     return $this->customeResponse(null,'not found',404);
-    // }
-
-    public function podcastListRating (RatingRequest $request , PodcastList $podcastList)
+    public function podcastListRating(RatingRequest $request, PodcastList $podcastList)
     {
-        if(!empty($podcastList)){
+        if (!empty($podcastList)) {
+
             $user = Auth::user();
             $rate = $request->rate;
-            $podcastList->rateOnce($rate);
-            $data = new PodcastListResource($podcastList);
-            $activity = activity()->causedBy($user)->log('You have rated a podcast list about '. $podcastList->title);
-            return $this->customeResponse($data, 'Done!', 200);
+
+            DB::beginTransaction();
+            try {
+                $podcastList->rateOnce($rate);
+                $data = new PodcastListResource($podcastList);
+                activity()->causedBy($user)->log('You have rated a podcast list about ' . $podcastList->title);
+
+                DB::commit();
+                return $this->customeResponse($data, 'Done!', 200);
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
         }
-        return $this->customeResponse(null,'not found',404);
+        return $this->customeResponse(null, 'not found', 404);
     }
 
 
-    public function followList(User $user,PodcastList $podcastList){
-        if($podcastList){
+    public function followList(User $user, PodcastList $podcastList)
+    {
+        if ($podcastList) {
             $user = Auth::user();
-            $activity = activity()->causedBy($user)->log('You have followed a podcast list about '. $podcastList->title);
             return $podcastList->followToggle($user);
-
         }
-        return $this->customeResponse(null,'podcastList not found',404);
-
+        return $this->customeResponse(null, 'podcastList not found', 404);
     }
 
     public function interstePodcastList()

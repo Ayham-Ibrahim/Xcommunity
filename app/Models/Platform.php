@@ -13,4 +13,14 @@ class Platform extends Model
         'rss_feed',
     ];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_platforms');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'categories_platforms');
+    }
+
 }

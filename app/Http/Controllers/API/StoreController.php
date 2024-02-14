@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\StoreResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\DownloadFileTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
-    use ApiResponseTrait, UploadFileTrait ,DownloadFileTrait;
+    use ApiResponseTrait, UploadFileTrait, DownloadFileTrait;
     /**
      * Display a listing of the resource.
      */
@@ -50,7 +51,7 @@ class StoreController extends Controller
 
         $data = new StoreResource($store);
 
-        return $this->customeResponse($data, $store->type ." Created Successfuly", 201);
+        return $this->customeResponse($data, $store->type . " Created Successfuly", 201);
     }
 
     /**
@@ -58,7 +59,7 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        if(!empty($store)){
+        if (!empty($store)) {
             $user = Auth::user();
             $store->visit($user);
             $data = new StoreResource($store);
@@ -94,7 +95,7 @@ class StoreController extends Controller
         $data = new StoreResource($store);
 
 
-        return $this->customeResponse($data, $store->type ." Updated Successfuly", 200);
+        return $this->customeResponse($data, $store->type . " Updated Successfuly", 200);
     }
 
     /**
@@ -104,7 +105,7 @@ class StoreController extends Controller
     {
         if (!empty($store)) {
             $store->delete();
-            return $this->customeResponse(null , $store->type ." deleted Successfully" , 200);
+            return $this->customeResponse(null, $store->type . " deleted Successfully", 200);
         }
 
         return $this->customeResponse(null, "not found", 404);
@@ -124,27 +125,45 @@ class StoreController extends Controller
     {
         if (!empty($store)) {
             $user_id = Auth::user()->id;
-            $user = User::where('id',$user_id)->first();
-            $activity = activity()->causedBy($user)->log('You have downloaded a '. $store->type . ' about '. $store->title);
-            $store->downloadFile($user,$store->file);
-            $path = storage_path('app\public\\'.$store->file);
-            return response()->download($path);
-        }else{
-            return $this->customeResponse(null,'not found',404);
+            $user = User::where('id', $user_id)->first();
+
+            DB::beginTransaction();
+            try {
+                activity()->causedBy($user)->log('You have downloaded a ' . $store->type . ' about ' . $store->title);
+                $store->downloadFile($user, $store->file);
+                $path = storage_path('app\public\\' . $store->file);
+
+                DB::commit();
+                return response()->download($path);
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        } else {
+            return $this->customeResponse(null, 'not found', 404);
         }
     }
 
-    public function storetRating (RatingRequest $request , Store $store)
+    public function storetRating(RatingRequest $request, Store $store)
     {
-        if(!empty($store)){
+        if (!empty($store)) {
             $user = Auth::user();
             $rate = $request->rate;
-            $store->rateOnce($rate);
-            $data = new StoreResource($store);
-            $activity = activity()->causedBy($user)->log('You have rated a '. $store->type .' about'. $store->title);
-            return $this->customeResponse($data, 'Done!', 200);
+
+            DB::beginTransaction();
+            try {
+                $store->rateOnce($rate);
+                $data = new StoreResource($store);
+                $activity = activity()->causedBy($user)->log('You have rated a ' . $store->type . ' about' . $store->title);
+
+                DB::commit();
+                return $this->customeResponse($data, 'Done!', 200);
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
         }
-        return $this->customeResponse(null,'not found',404);
+        return $this->customeResponse(null, 'not found', 404);
     }
 
     public function saveToList(UserList $userList, Store $store)
@@ -155,7 +174,7 @@ class StoreController extends Controller
                 if ($user->id == $userList->user_id) {
                     return $store->saveToList($userList);
                 }
-                return response()->json(['message' => 'You Do Not Have Authority To Do This'],403);
+                return response()->json(['message' => 'You Do Not Have Authority To Do This'], 403);
             }
             return $this->customeResponse(null, "userlist  not found", 404);
         }

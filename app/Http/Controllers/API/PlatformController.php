@@ -7,6 +7,9 @@ use App\Http\Requests\PlatformRequest;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\GetNewsTrait;
 use App\Models\Platform;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SimplePie\SimplePie;
 
 class PlatformController extends Controller
@@ -35,12 +38,33 @@ class PlatformController extends Controller
      */
     public function store (PlatformRequest $request)
     {
+        $feedUrl =  $request->rss_feed;
 
-        $platform = Platform::create([
-            'rss_feed' => $request->rss_feed
-        ]);
+        $feed = new SimplePie();
+        $feed->set_feed_url($feedUrl);
+        $feed->enable_cache(false);
+        $feed->init();
+        if (empty($feed->get_items())) {
+            return response()->json(['message' => 'This Link Is Invalid']);
+        }
 
-        return response()->json(['message' => 'Platform added successfully'], 201);
+        DB::beginTransaction();
+        try {
+            $platform = Platform::create([
+                'rss_feed' => $feedUrl
+            ]);
+
+            $user_id = Auth::user()->id;
+            $user = User::find($user_id);
+            $user->platforms()->attach($platform->id);
+
+            DB::commit();
+            return response()->json(['message' => 'Platform added successfully'], 201);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
     }
 
     /**

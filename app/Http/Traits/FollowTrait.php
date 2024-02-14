@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Models\Follow;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 trait FollowTrait
 {
@@ -18,8 +19,21 @@ trait FollowTrait
             $this->unFollow($user);
             return $message = 'you are Unfollowing ' . $this->title;
         } else {
-            $this->follow($user);
+            DB::beginTransaction();
+            try {
+                $this->follow($user);
+
+            if ($this->section->name == 'Store' ){
+                activity()->causedBy($user)->log('You  have followed a '. $this->type .' about ' . $this->title);
+            }
+            activity()->causedBy($user)->log('You have followed a '. $this->section .' about ' . $this->title);
+
+            DB::commit();
             return $message = 'you are following ' . $this->title;
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
         }
     }
 

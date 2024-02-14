@@ -6,7 +6,6 @@ use SimplePie\SimplePie;
 
 trait GetNewsTrait
 {
-
     public function getNews($feedUrl)
     {
         $feed = new SimplePie();
