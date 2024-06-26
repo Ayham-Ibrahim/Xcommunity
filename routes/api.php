@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaveController;
@@ -8,7 +9,9 @@ use App\Http\Controllers\API\StoreController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\PodcastController;
+use App\Http\Controllers\API\SectionController;
 use App\Http\Controllers\API\ActivityController;
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\PlatformController;
 use App\Http\Controllers\API\UserInfoController;
 use App\Http\Controllers\API\UserListController;
@@ -20,8 +23,6 @@ use App\Http\Controllers\API\UserInterestController;
 use App\Http\Controllers\API\AdvertismaentController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\SocialiteLoginController;
-use App\Http\Controllers\API\SectionController;
-use App\Models\Section;
 
 /*
 |--------------------------------------------------------------------------
@@ -254,7 +255,7 @@ Route::middleware('auth:sanctum')->group(function () {
     #######################################################################################################
 
     Route::get('/sections', [SectionController::class, 'index']);
-    Route::post('/section/{section}', [SectionController::class, 'show']);
+    Route::get('/section/{section}', [SectionController::class, 'show']);
 
     #######################################################################################################
     #######################################################################################################
@@ -292,5 +293,8 @@ Route::middleware('auth:sanctum')->group(function () {
     #######################################################################################################
     #######################################################################################################
     #######################################################################################################
+
+    Route::get('/show-all-category', [CategoryController::class, 'index']);
+
 
 });

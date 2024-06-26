@@ -26,7 +26,7 @@ class ArticleGroup extends Model
     public function toSearchableArray(): array
     {
         return [
-            'name'       => $this->name,
+            'title'       => $this->title,
             'group_info' => $this->group_info,
         ];
     }

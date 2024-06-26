@@ -17,19 +17,25 @@ trait FollowTrait
     public function followToggle (User $user){
         if ($this->hasFollowedByUser($user)){
             $this->unFollow($user);
-            return $message = 'you are Unfollowing ' . $this->title;
+            return response()->json([
+                'message' => 'you are Unfollowing ' . $this->title ,
+            ]);
+            // return $message = 'you are Unfollowing ' . $this->title;
         } else {
             DB::beginTransaction();
             try {
                 $this->follow($user);
 
-            if ($this->section->name == 'Store' ){
-                activity()->causedBy($user)->log('You  have followed a '. $this->type .' about ' . $this->title);
-            }
+            // if ($this->section->name == 'Store' ){
+            //     activity()->causedBy($user)->log('You  have followed a '. $this->type .' about ' . $this->title);
+            // }
             activity()->causedBy($user)->log('You have followed a '. $this->section .' about ' . $this->title);
 
             DB::commit();
-            return $message = 'you are following ' . $this->title;
+            return response()->json([
+                'message' => 'you are following ' . $this->title ,
+            ]);
+            // return $message = 'you are following ' . $this->title;
             } catch (\Throwable $e) {
                 DB::rollBack();
                 throw $e;
