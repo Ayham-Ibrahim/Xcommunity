@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ArticleGroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class ArticleResource extends JsonResource
         $child_category = $this->childCategory;
         return [
             'id'                   => $this->id,
-            'article'              => $article_group->name,
+            'article_group'        => $article_group->title,
             'child_category'       => $child_category->name,
             'title'                => $this->title,
             'body'                 => $this->body,

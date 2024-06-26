@@ -17,7 +17,7 @@ trait UserArchiveTrait {
             $message = $this->title .' unsaved successfully';
         } else {
             $this->addItemToArchive($user);
-            $message = $this->title .' saved successfully';
+            $message =  $this->title .' saved successfully';
         }
 
         return response()->json(['message' => $message]);
